@@ -1,0 +1,1 @@
+long getDelayFromSpeed(long s);
