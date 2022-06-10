@@ -25,7 +25,9 @@ void LinkMotor::setSpeed(long speed) {
 }
 
 int LinkMotor::getSpeed() { return currentSpeed; }
+
 int LinkMotor::getDelay() { return currentDelay; }
+
 int LinkMotor::getLimitSwitch() {
     return limitSwitchPin != -1 ? digitalRead(limitSwitchPin) : -1;
 }
