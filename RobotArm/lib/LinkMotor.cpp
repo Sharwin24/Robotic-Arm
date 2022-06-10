@@ -86,7 +86,7 @@ int LinkMotor::calibrate() {
 
 void LinkMotor::update() {
     if (current = target) {
-        reutrn;
+        return;
     }
     // So this function will get called many times per second, we want to trigger steps based on the speed
     // We can keep track of the current time of the program and the last time we did a step, notably we should not have
