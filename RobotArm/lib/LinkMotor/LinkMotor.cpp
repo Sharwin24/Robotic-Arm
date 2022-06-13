@@ -1,12 +1,13 @@
 #include <Arduino.h>
 #include <LinkMotor.h>
+#include <Utils.h>
 
 // Docs in header file
 
 void LinkMotor::init() {
     current = 0;
     target = 0;
-    currentSpeed = 500;
+    currentSpeed = 1000;
     currentDelay = getDelayFromSpeed(currentSpeed);
     previousChangeTime = micros();
     currentlyRunning = false;
@@ -24,14 +25,6 @@ void LinkMotor::setSpeed(long speed) {
     currentDelay = getDelayFromSpeed(speed);
 }
 
-int LinkMotor::getSpeed() { return currentSpeed; }
-
-int LinkMotor::getDelay() { return currentDelay; }
-
-int LinkMotor::getLimitSwitch() {
-    return limitSwitchPin != -1 ? digitalRead(limitSwitchPin) : -1;
-}
-
 void LinkMotor::setDirection(bool CW) {
     // TODO: Test CW and CCW
     if (CW) {
@@ -42,10 +35,42 @@ void LinkMotor::setDirection(bool CW) {
     currentDir = CW;
 }
 
+void LinkMotor::setTarget(int targetStep) {
+    if (current != target) {
+        return;
+    }
+    if (targetStep < 0) {
+        return;
+    }
+    previous = current;
+    target = targetStep;
+    if (current > target) {
+        setDirection(false);  // TODO: Tune directions
+    } else {
+        setDirection(true);
+    }
+}
+
+int LinkMotor::getSpeed() { return currentSpeed; }
+
+int LinkMotor::getDelay() { return currentDelay; }
+
+int LinkMotor::getLimitSwitch() {
+    return limitSwitchPin != -1 ? digitalRead(limitSwitchPin) : -1;
+}
+
+void LinkMotor::writeMotor(bool high) {
+    if (high) {
+        digitalWrite(stepPin, HIGH);
+    } else {
+        digitalWrite(stepPin, LOW);
+    }
+}
+
 void LinkMotor::stepMotor() {
-    digitalWrite(stepPin, HIGH);
+    writeMotor(true);
     delayMicroseconds(currentDelay);
-    digitalWrite(stepPin, LOW);
+    writeMotor(false);
     delayMicroseconds(currentDelay);
 }
 
@@ -72,7 +97,7 @@ int LinkMotor::calibrate() {
     }
 
     int steps = 0;
-    limitSwitchDir = true;  // TODO: Tune direction
+    bool limitSwitchDir = true;  // TODO: Tune direction
     setDirection(limitSwitchDir);
     while (getLimitSwitch() == 1) {
         stepMotor();
@@ -87,7 +112,7 @@ int LinkMotor::calibrate() {
 }
 
 void LinkMotor::update() {
-    if (current = target) {
+    if (current == target) {
         return;
     }
     // So this function will get called many times per second, we want to trigger steps based on the speed
@@ -104,7 +129,7 @@ void LinkMotor::update() {
         writeMotor(currentlyRunning);
         previousChangeTime = currentTime;
         // Speed should already have been set
-        // long s = getSpeed();
+        // long s = getSpeedCurve(stepsMoved, totalSteps);
         // setSpeed(s);
         if (!currentlyRunning) {
             // increment steps in off cycle
@@ -114,22 +139,6 @@ void LinkMotor::update() {
                 current--;
             }
         }
-    }
-}
-
-void LinkMotor::setTarget(int targetStep) {
-    if (current != target) {
-        return;
-    }
-    if (targetStep < 0) {
-        return;
-    }
-    previous = current;
-    target = targetStep;
-    if (current > target) {
-        setDirection(false);  // TODO: Tune directions
-    } else {
-        setDirection(true);
     }
 }
 

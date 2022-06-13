@@ -23,9 +23,9 @@ class LinkMotor {
     long currentDelay;
 
    public:
-    LinkMotor(int _nemaMotorType, int _linkNumber, int _stepPin, int _dirPin, int _limitSwitchPin) {
-        nemaMotorType = _nemaMotorType;
+    LinkMotor(int _linkNumber, int _nemaMotorType, int _stepPin, int _dirPin, int _limitSwitchPin) {
         linkNumber = _linkNumber;
+        nemaMotorType = _nemaMotorType;
         stepPin = _stepPin;
         dirPin = _dirPin;
         limitSwitchPin = _limitSwitchPin;
@@ -48,6 +48,8 @@ class LinkMotor {
     void setTarget(int targetStep);
 
     void writeMotor(bool high);
+
+    void stepMotor();
 
     void moveTo(int targetStep);
 

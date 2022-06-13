@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <Utils.h>
 
 long getDelayFromSpeed(long s) {
@@ -8,4 +9,15 @@ long getDelayFromSpeed(long s) {
     // writeInfo(String(microseconds));
     // writeDebug("Speed: " + String(microseconds) + " Delay");
     return microseconds;
+}
+
+void waitForSerialInput() {
+    while (Serial.available() == 0) {
+        delay(50);
+    }
+}
+
+void writeMsg(String msg) {
+    Serial.print("MSG: ");
+    Serial.println(msg);
 }
