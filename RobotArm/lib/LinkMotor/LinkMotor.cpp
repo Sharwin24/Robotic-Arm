@@ -26,7 +26,6 @@ void LinkMotor::setSpeed(long speed) {
 }
 
 void LinkMotor::setDirection(bool CW) {
-    // TODO: Test CW and CCW
     if (CW) {
         digitalWrite(dirPin, HIGH);
     } else {
@@ -40,12 +39,12 @@ void LinkMotor::setTarget(int targetStep) {
         return;
     }
     if (targetStep < 0) {
-        return;
+        return;  // TODO: Implement negative angles
     }
     previous = current;
     target = targetStep;
     if (current > target) {
-        setDirection(false);  // TODO: Tune directions
+        setDirection(false);
     } else {
         setDirection(true);
     }
@@ -76,6 +75,7 @@ void LinkMotor::stepMotor() {
 
 void LinkMotor::moveTo(int targetStep) {
     if (targetStep < 0) {
+        // TODO: Implement negative angles
         Serial.print("Target step must be positive");
         return;
     }
@@ -91,13 +91,18 @@ void LinkMotor::moveTo(int targetStep) {
     current = targetStep;
 }
 
+void LinkMotor::jointAngle(float degrees) {
+    int steps = degreeToSteps(degrees);
+    moveTo(steps);
+}
+
 int LinkMotor::calibrate() {
     if (limitSwitchPin == -1) {
         return -1;
     }
 
     int steps = 0;
-    bool limitSwitchDir = true;  // TODO: Tune direction
+    bool limitSwitchDir = true;
     setDirection(limitSwitchDir);
     while (getLimitSwitch() == 1) {
         stepMotor();

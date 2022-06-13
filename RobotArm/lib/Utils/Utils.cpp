@@ -1,13 +1,10 @@
 #include <Arduino.h>
 #include <Utils.h>
+#include <math.h>
 
 long getDelayFromSpeed(long s) {
-    // Here we are converting ticks per second into a delay timing
-    // ticks / second *
-    // writeInfo(String(s));
+    // Converting ticks per second into a delay timing
     long microseconds = 1000000 / s;
-    // writeInfo(String(microseconds));
-    // writeDebug("Speed: " + String(microseconds) + " Delay");
     return microseconds;
 }
 
@@ -20,4 +17,9 @@ void waitForSerialInput() {
 void writeMsg(String msg) {
     Serial.print("MSG: ");
     Serial.println(msg);
+}
+
+int degreeToSteps(float degree, float stepsPerRev) {
+    // spr / 360 = steps per degree * degree
+    return floorf((stepsPerRev / 360.0) * degree);
 }

@@ -6,8 +6,9 @@ void waitForSerialInput();
 
 void writeMsg(String msg);
 
-// Steps per revolution: 400 (set on driver)
+// Steps per revolution (set on driver)
 // Steps per revolution (SPR) -> angle (Degrees)
-// 400 / 360 = 1.11 steps per degree -> approx 1 step per degree
+// SPR / 360 = steps per degree
+int degreeToSteps(float degree, int stepsPerRev);
 
 #endif

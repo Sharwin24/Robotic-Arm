@@ -53,6 +53,8 @@ class LinkMotor {
 
     void moveTo(int targetStep);
 
+    void jointAngle(float degrees);
+
     void update();
 
     bool isMoving();
