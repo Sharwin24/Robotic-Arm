@@ -2,6 +2,7 @@
 #include <Position.h>
 #include <JointAngles.h>
 #include <math.h>
+// #include <Eigen.h>
 
 // Math Functions
 Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {

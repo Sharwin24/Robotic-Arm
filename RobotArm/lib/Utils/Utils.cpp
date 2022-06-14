@@ -4,6 +4,11 @@
 
 const float stepsPerRev = 800.0;
 
+void initSerialMonitor() {
+    Serial.begin(9600);
+    Serial.flush();
+}
+
 long getDelayFromSpeed(long s) {
     // Converting ticks per second into a delay timing
     long microseconds = 1000000 / s;
@@ -16,7 +21,7 @@ void waitForSerialInput() {
     }
 }
 
-void writeMsg(String msg) {
+void print(String msg) {
     Serial.print("MSG: ");
     Serial.println(msg);
 }

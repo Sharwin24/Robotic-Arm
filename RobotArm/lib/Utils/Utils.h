@@ -1,10 +1,13 @@
 #ifndef Utils_h
 #define Utils_h
+#include <Arduino.h>
+void initSerialMonitor();
+
 long getDelayFromSpeed(long s);
 
 void waitForSerialInput();
 
-void writeMsg(String msg);
+void print(String msg);
 
 // Steps per revolution (set on driver)
 // Steps per revolution (SPR) -> angle (Degrees)
