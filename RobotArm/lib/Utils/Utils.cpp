@@ -32,15 +32,15 @@ RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2) {
     float r0[] = {0.0, 0.0, 1.0};
     float r1[] = {0.0, -1.0, 0.0};
     float r2[] = {1.0, 0.0, 0.0};
-    for (int m = 0; m < 3; i++) {
-        for (int r = 0; r < 3; j++) {
+    for (int m = 0; m < 3; m++) {
+        for (int r = 0; r < 3; r++) {
             for (int k = 0; k < 3; k++) {
                 if (m == 0) {
-                    r0[j] += R1.get(m, k) * R2.get(k, r);
+                    r0[r] += R1.get(m, k) * R2.get(k, r);
                 } else if (m == 1) {
-                    r1[j] += R1.get(m, k) * R2.get(k, r);
+                    r1[r] += R1.get(m, k) * R2.get(k, r);
                 } else if (m == 2) {
-                    r2[j] += R1.get(m, k) * R2.get(k, r);
+                    r2[r] += R1.get(m, k) * R2.get(k, r);
                 }
             }
         }
@@ -53,17 +53,17 @@ HomogeneousTransform multiply(HomogeneousTransform A1, HomogeneousTransform A2) 
     float r1[] = {0.0, 0.0, 0.0, 0.0};
     float r2[] = {0.0, 0.0, 0.0, 0.0};
     float r3[] = {0.0, 0.0, 0.0, 0.0};
-    for (int m = 0; m < 4; i++) {
-        for (int r = 0; r < 4; j++) {
+    for (int m = 0; m < 4; m++) {
+        for (int r = 0; r < 4; r++) {
             for (int k = 0; k < 4; k++) {
                 if (m == 0) {
-                    r0[j] += A1.get(m, k) * A2.get(k, r);
+                    r0[r] += A1.get(m, k) * A2.get(k, r);
                 } else if (m == 1) {
-                    r1[j] += A1.get(m, k) * A2.get(k, r);
+                    r1[r] += A1.get(m, k) * A2.get(k, r);
                 } else if (m == 2) {
-                    r2[j] += A1.get(m, k) * A2.get(k, r);
+                    r2[r] += A1.get(m, k) * A2.get(k, r);
                 } else if (m == 3) {
-                    r3[j] += A1.get(m, k) * A2.get(k, r);
+                    r3[r] += A1.get(m, k) * A2.get(k, r);
                 }
             }
         }

@@ -1,10 +1,10 @@
 #ifndef Manipulator_h
+#define Manipulator_h
 #include <Arduino.h>
 #include <LinkMotor.h>
 #include <Utils.h>
 #include <Position.h>
 #include <JointAngles.h>
-#define Manipulator_h
 
 // Link 1
 const int link1Length = 125;  // length is in mm

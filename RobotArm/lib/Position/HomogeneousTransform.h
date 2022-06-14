@@ -1,9 +1,8 @@
 #ifndef HomogeneousTransform_h
 #define HomogeneousTransform_h
-#include <RotationMatrix.h>
-#include <DistanceVector.h>
-#include <math.h>
 #include <Arduino.h>
+#include <RotationMatrix.h>
+#include <Vector.h>
 #include <Utils.h>
 class HomogeneousTransform {
    private:
@@ -21,7 +20,7 @@ class HomogeneousTransform {
             row3[i] = r3[i];
         }
     }
-    HomogeneousTransform(RotationMatrix R, DistanceVector r) {
+    HomogeneousTransform(RotationMatrix R, Vector r) {
         for (int c = 0; c < 2; c++) {
             row0[c] = R.get(0, c);
             row1[c] = R.get(1, c);

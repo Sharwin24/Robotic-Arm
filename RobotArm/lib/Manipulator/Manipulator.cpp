@@ -2,7 +2,7 @@
 #include <Position.h>
 #include <JointAngles.h>
 #include <math.h>
-#include <DistanceVector.h>
+#include <Vector.h>
 #include <RotationMatrix.h>
 #include <HomogeneousTransform.h>
 // #include <Eigen.h> // Build issues
@@ -14,19 +14,19 @@ Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
     float q2R = radians(q2);
     float q3R = radians(q3);
     // Frame 0 -> 1
-    DistanceVector r01 = DistanceVector(link1Length * cosf(q1R), link1Length * sinf(q1R), 0.0);
+    Vector r01 = Vector(link1Length * cosf(q1R), link1Length * sinf(q1R), 0.0);
     RotationMatrix R01 = RotationMatrix('z', q1R);
     HomogeneousTransform A01 = HomogeneousTransform(R01, r01);
     // Frame 1 -> 2
-    DistanceVector r12 = DistanceVector(link2Length * cosf(q2R), link2Length * sinf(q2R), 0.0);
+    Vector r12 = Vector(link2Length * cosf(q2R), link2Length * sinf(q2R), 0.0);
     RotationMatrix R12 = RotationMatrix('z', q2R);
     HomogeneousTransform A12 = HomogeneousTransform(R12, r12);
     // Frame 2 -> 3
-    DistanceVector r23 = DistanceVector(link3Length * cosf(q3R), link3Length * sinf(q3R), 0.0);
+    Vector r23 = Vector(link3Length * cosf(q3R), link3Length * sinf(q3R), 0.0);
     RotationMatrix R23 = RotationMatrix('z', q3R);
     HomogeneousTransform A23 = HomogeneousTransform(R23, r23);
     // Frame 3 -> EE
-    DistanceVector r3e = DistanceVector(endEffectorLength, 0.0, 0.0);
+    Vector r3e = Vector(endEffectorLength, 0.0, 0.0);
     float R3e0[] = {0.0, 0.0, 1.0};
     float R3e1[] = {0.0, -1.0, 0.0};
     float R3e2[] = {1.0, 0.0, 0.0};
@@ -42,7 +42,18 @@ Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
 }
 
 JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget) {
-    return JointAngles(0, 0, 0);
+    float ell = sqrtf(sq(xTarget) + sq(yTarget));
+    float q2D = -acosf(
+        (sq(ell) - sq(link1Length) - sq(link2Length)) /
+        (2 * link1Length * link2Length));
+    float beta = acosf(
+        (sq(ell) + sq(link1Length) - sq(link2Length)) /
+        (2 * ell * link1Length));
+    float alpha = atan2f(yTarget, xTarget);
+    float q1D = alpha + beta;  // + for elbow up, - for elbow down
+    float phi = 270.0;
+    float q3D = phi - q1D - q2D;
+    return JointAngles(q1D, q2D, q3D);
 }
 
 // Movement Functions
