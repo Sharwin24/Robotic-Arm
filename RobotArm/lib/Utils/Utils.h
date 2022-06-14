@@ -19,6 +19,10 @@ int degreeToSteps(float degree);
 
 RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2);
 
+RotationMatrix transpose(RotationMatrix R);
+
 HomogeneousTransform multiply(HomogeneousTransform A1, HomogeneousTransform A2);
+
+HomogeneousTransform transpose(HomogeneousTransform A);
 
 #endif

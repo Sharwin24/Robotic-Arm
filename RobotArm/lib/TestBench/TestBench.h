@@ -6,11 +6,16 @@
 #include <TestBench.h>
 class TestBench {
    private:
-    Manipulator RobotArm = Manipulator();
+    Manipulator RobotArm;  // = Manipulator();
 
    public:
+    TestBench() {
+        Serial.println("Initializing TestBench using Default Manipulator");
+        RobotArm = Manipulator();
+    }
+
     TestBench(Manipulator m) {
-        Serial.println("Initializing TestBench");
+        Serial.println("Initializing TestBench using Given Manipulator");
         RobotArm = m;
     }
 
