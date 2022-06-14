@@ -47,8 +47,6 @@ class LinkMotor {
 
     void setTarget(int targetStep);
 
-    void writeMotor(bool high);
-
     void stepMotor();
 
     void moveTo(int targetStep);

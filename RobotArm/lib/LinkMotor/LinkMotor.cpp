@@ -58,18 +58,10 @@ int LinkMotor::getLimitSwitch() {
     return limitSwitchPin != -1 ? digitalRead(limitSwitchPin) : -1;
 }
 
-void LinkMotor::writeMotor(bool high) {
-    if (high) {
-        digitalWrite(stepPin, HIGH);
-    } else {
-        digitalWrite(stepPin, LOW);
-    }
-}
-
 void LinkMotor::stepMotor() {
-    writeMotor(true);
+    digitalWrite(stepPin, HIGH);
     delayMicroseconds(currentDelay);
-    writeMotor(false);
+    digitalWrite(stepPin, LOW);
     delayMicroseconds(currentDelay);
 }
 
@@ -123,15 +115,19 @@ void LinkMotor::update() {
     // So this function will get called many times per second, we want to trigger steps based on the speed
     // We can keep track of the current time of the program and the last time we did a step, notably we should not have
     // any delays here
-    int stepsMoved = abs(current - previous);
-    int totalSteps = abs(target - previous);
+    // int stepsMoved = abs(current - previous);
+    // int totalSteps = abs(target - previous);
     // We can go ahead and assume that the current speed is updated, then every time we finish a step we will go ahead
     // and update it
     long currentTime = micros();
     long timeSinceLastStep = currentTime - previousChangeTime;
     if (timeSinceLastStep > currentDelay) {
         currentlyRunning = !currentlyRunning;
-        writeMotor(currentlyRunning);
+        if (currentlyRunning) {  // Step if currently running
+            digitalWrite(stepPin, HIGH);
+        } else {
+            digitalWrite(stepPin, LOW);
+        }
         previousChangeTime = currentTime;
         // Speed should already have been set
         // long s = getSpeedCurve(stepsMoved, totalSteps);
