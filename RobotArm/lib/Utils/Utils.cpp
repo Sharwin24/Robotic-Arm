@@ -97,7 +97,7 @@ HomogeneousTransform transpose(HomogeneousTransform A) {
     float r3[] = {0.0, 0.0, 0.0, 0.0};
     for (int r = 0; r < 4; r++) {
         for (int c = 0; c < 4; c++) {
-            float f = R.get(r, c);
+            float f = A.get(r, c);
             if (c == 0) {
                 r0[r] = f;
             } else if (c == 1) {
