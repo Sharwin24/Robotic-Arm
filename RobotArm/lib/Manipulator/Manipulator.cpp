@@ -1,9 +1,10 @@
 #include <Manipulator.h>
 #include <Position.h>
 #include <JointAngles.h>
+#include <math.h>
 
 // Math Functions
-Position Manipulator::ForwardKinematics(float link1Angle, float link2Angle, float link3Angle) {
+Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
     return Position(0, 0);
 }
 
@@ -12,7 +13,7 @@ JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget) {
 }
 
 // Movement Functions
-void Manipulator::moveToAngles(float link1Angle, float link2Angle, float link3Angle) {
+void Manipulator::moveToAngles(float q1, float q2, float q3) {
 }
 
 void Manipulator::moveToJointAngles(JointAngles jointAngleTargets) {

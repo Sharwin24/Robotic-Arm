@@ -11,6 +11,9 @@
 class Manipulator {
    private:
     int numLinks;
+    LinkMotor link1;
+    LinkMotor link2;
+    LinkMotor link3;
 
    public:
     Manipulator() {
@@ -20,14 +23,17 @@ class Manipulator {
         const int link1StepPin = 2;
         const int link1LimitSwitchPin = -1;
         LinkMotor Link1 = LinkMotor(1, 17, link1StepPin, link1DirPin, link1LimitSwitchPin);
+        link1 = Link1;
         // Link 2
         const int link2DirPin = -1;
         const int link2StepPin = -1;
         LinkMotor Link2 = LinkMotor(2, 14, link2StepPin, link2DirPin, -1);
+        link2 = Link2;
         // Link 3
         const int link3DirPin = -1;
         const int link3StepPin = -1;
         LinkMotor Link3 = LinkMotor(3, 11, link3StepPin, link3DirPin, -1);
+        link3 = Link3;
         LinkMotor links[] = {Link1, Link2, Link3};
         numLinks = sizeof(links) / sizeof(LinkMotor);
         writeMsg("Initializing Motors");
@@ -43,17 +49,24 @@ class Manipulator {
     }
 
     // Math Functions
-    Position ForwardKinematics(float link1Angle, float link2Angle, float link3Angle);
+    Position ForwardKinematics(float q1, float q2, float q3);
 
     JointAngles InverseKinematics(float xTarget, float yTarget);
 
     // Movement Functions
-    void moveToAngles(float link1Angle, float link2Angle, float link3Angle);
+    void moveToAngles(float q1, float q2, float q3);
 
     void moveToJointAngles(JointAngles jointAngleTargets);
 
     void moveToXY(float xTarget, float yTarget);
 
     void moveToPosition(Position positionTarget);
+
+    // Individual Link functions
+    void link1ToAngle(float degrees);
+
+    void link2ToAngle(float degrees);
+
+    void link3ToAngle(float degrees);
 };
 #endif
