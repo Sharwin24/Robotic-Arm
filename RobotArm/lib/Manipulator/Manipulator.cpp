@@ -2,11 +2,43 @@
 #include <Position.h>
 #include <JointAngles.h>
 #include <math.h>
-// #include <Eigen.h>
+#include <DistanceVector.h>
+#include <RotationMatrix.h>
+#include <HomogeneousTransform.h>
+// #include <Eigen.h> // Build issues
 
 // Math Functions
 Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
-    return Position(0, 0);
+    // Obtaining angles in radians
+    float q1R = radians(q1);
+    float q2R = radians(q2);
+    float q3R = radians(q3);
+    // Frame 0 -> 1
+    DistanceVector r01 = DistanceVector(link1Length * cosf(q1R), link1Length * sinf(q1R), 0.0);
+    RotationMatrix R01 = RotationMatrix('z', q1R);
+    HomogeneousTransform A01 = HomogeneousTransform(R01, r01);
+    // Frame 1 -> 2
+    DistanceVector r12 = DistanceVector(link2Length * cosf(q2R), link2Length * sinf(q2R), 0.0);
+    RotationMatrix R12 = RotationMatrix('z', q2R);
+    HomogeneousTransform A12 = HomogeneousTransform(R12, r12);
+    // Frame 2 -> 3
+    DistanceVector r23 = DistanceVector(link3Length * cosf(q3R), link3Length * sinf(q3R), 0.0);
+    RotationMatrix R23 = RotationMatrix('z', q3R);
+    HomogeneousTransform A23 = HomogeneousTransform(R23, r23);
+    // Frame 3 -> EE
+    DistanceVector r3e = DistanceVector(endEffectorLength, 0.0, 0.0);
+    float R3e0[] = {0.0, 0.0, 1.0};
+    float R3e1[] = {0.0, -1.0, 0.0};
+    float R3e2[] = {1.0, 0.0, 0.0};
+    RotationMatrix R3e = RotationMatrix(R3e0, R3e1, R3e2);
+    HomogeneousTransform A3e = HomogeneousTransform(R3e, r3e);
+
+    // Find Transformation
+    HomogeneousTransform A02 = multiply(A01, A12);
+    HomogeneousTransform A2e = multiply(A23, A3e);
+    HomogeneousTransform A0e = multiply(A02, A2e);
+
+    return Position(A0e.get(0, 3), A0e.get(1, 3));
 }
 
 JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget) {

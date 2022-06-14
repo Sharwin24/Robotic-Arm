@@ -10,7 +10,7 @@ class TestBench {
 
    public:
     TestBench(Manipulator m) {
-        print("Initializing TestBench");
+        Serial.println("Initializing TestBench");
         RobotArm = m;
     }
 

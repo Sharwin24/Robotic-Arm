@@ -21,7 +21,8 @@ const int link3Length = 40;
 const int link3DirPin = -1;
 const int link3StepPin = -1;
 const int link3LimitSwitchPin = -1;
-
+// End-Effector
+const int endEffectorLength = 10;
 // TODO: Docs
 
 class Manipulator {
@@ -40,21 +41,21 @@ class Manipulator {
         Manipulator(link1Length, link2Length, link3Length);
     }
     Manipulator(float _link1Length, float _link2Length, float _link3Length) {
-        print("Initializing 3-Link Manipulator");
+        Serial.println("Initializing 3-Link Manipulator");
         link1Length = _link1Length;
         link2Length = _link2Length;
         link3Length = _link3Length;
         numLinks = 3;
         // LinkMotor links[] = {Link1, Link2, Link3};
-        print("Initializing Motors");
+        Serial.println("Initializing Motors");
         Link1.init();
         Link2.init();
         Link3.init();
-        print("Calibrating Motors");
+        Serial.println("Calibrating Motors");
         Link1.calibrate();
         Link2.calibrate();
         Link3.calibrate();
-        print("Manipulator Setup Complete");
+        Serial.println("Manipulator Setup Complete");
         delay(500);
     }
 
