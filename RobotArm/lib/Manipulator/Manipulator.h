@@ -6,36 +6,32 @@
 #include <JointAngles.h>
 #define Manipulator_h
 
+// Link 1
+const int link1DirPin = 3;
+const int link1StepPin = 2;
+const int link1LimitSwitchPin = -1;
+// Link 2
+const int link2DirPin = -1;
+const int link2StepPin = -1;
+
+// Link 3
+const int link3DirPin = -1;
+const int link3StepPin = -1;
+
 // TODO: Docs
 
 class Manipulator {
    private:
     int numLinks;
-    LinkMotor link1;
-    LinkMotor link2;
-    LinkMotor link3;
+    LinkMotor Link1 = LinkMotor(1, 17, link1StepPin, link1DirPin, link1LimitSwitchPin);
+    LinkMotor Link2 = LinkMotor(2, 14, link2StepPin, link2DirPin, -1);
+    LinkMotor Link3 = LinkMotor(3, 11, link3StepPin, link3DirPin, -1);
 
    public:
     Manipulator() {
         writeMsg("Initializing 3-Link Manipulator");
-        // Link 1
-        const int link1DirPin = 3;
-        const int link1StepPin = 2;
-        const int link1LimitSwitchPin = -1;
-        LinkMotor Link1 = LinkMotor(1, 17, link1StepPin, link1DirPin, link1LimitSwitchPin);
-        link1 = Link1;
-        // Link 2
-        const int link2DirPin = -1;
-        const int link2StepPin = -1;
-        LinkMotor Link2 = LinkMotor(2, 14, link2StepPin, link2DirPin, -1);
-        link2 = Link2;
-        // Link 3
-        const int link3DirPin = -1;
-        const int link3StepPin = -1;
-        LinkMotor Link3 = LinkMotor(3, 11, link3StepPin, link3DirPin, -1);
-        link3 = Link3;
         LinkMotor links[] = {Link1, Link2, Link3};
-        numLinks = sizeof(links) / sizeof(LinkMotor);
+        numLinks = 3;
         writeMsg("Initializing Motors");
         Link1.init();
         Link2.init();

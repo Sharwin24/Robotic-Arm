@@ -26,3 +26,16 @@ void Manipulator::moveToXY(float xTarget, float yTarget) {
 void Manipulator::moveToPosition(Position positionTarget) {
     moveToXY(positionTarget.x, positionTarget.y);
 }
+
+// Individual Link functions
+void Manipulator::link1ToAngle(float degrees) {
+    Link1.jointAngle(degrees);
+}
+
+void Manipulator::link2ToAngle(float degrees) {
+    Link2.jointAngle(degrees);
+}
+
+void Manipulator::link3ToAngle(float degrees) {
+    Link3.jointAngle(degrees);
+}

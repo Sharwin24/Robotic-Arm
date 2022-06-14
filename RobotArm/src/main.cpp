@@ -4,19 +4,19 @@
 #include <JointAngles.h>
 #include <Utils.h>
 
+Manipulator RobotArm = Manipulator();
 void setup() {
     Serial.begin(9600);
     Serial.flush();
-    Manipulator RobotArm = Manipulator();
 }
 
 void loop() {
-    // Link3.moveTo(0);
-    // delay(1000);
-    // Link3.moveTo(1500);
-    // delay(1000);
-    // Link3.moveTo(2000);
-    // delay(1000);
-    // Link3.moveTo(0);
-    // delay(1000);
+    RobotArm.link1ToAngle(0);
+    delay(1000);
+    RobotArm.link1ToAngle(90);
+    delay(1000);
+    RobotArm.link1ToAngle(115);
+    delay(1000);
+    RobotArm.link1ToAngle(0);
+    delay(1000);
 }
