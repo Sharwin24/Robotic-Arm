@@ -4,8 +4,6 @@
 #include <RotationMatrix.h>
 #include <HomogeneousTransform.h>
 
-const float stepsPerRev = 800.0;
-
 void initSerialMonitor() {
     Serial.begin(9600);
     Serial.flush();
@@ -15,12 +13,6 @@ long getDelayFromSpeed(long s) {
     // Converting ticks per second into a delay timing
     long microseconds = 1000000 / s;
     return microseconds;
-}
-
-void waitForSerialInput() {
-    while (Serial.available() == 0) {
-        delay(50);
-    }
 }
 
 int degreeToSteps(float degree) {

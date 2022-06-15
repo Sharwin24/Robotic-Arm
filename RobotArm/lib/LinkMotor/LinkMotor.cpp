@@ -6,6 +6,7 @@
 
 void LinkMotor::init() {
     current = 0;
+    currentAngle = current % stepsPerRev;
     target = 0;
     currentSpeed = 1000;
     currentDelay = getDelayFromSpeed(currentSpeed);
@@ -36,7 +37,7 @@ void LinkMotor::setDirection(bool CW) {
 
 void LinkMotor::setTarget(int targetStep) {
     if (current != target) {
-        return;
+        return;  // Motor is currently moving
     }
     if (targetStep < 0) {
         return;  // TODO: Implement negative angles
@@ -81,6 +82,7 @@ void LinkMotor::moveTo(int targetStep) {
         stepMotor();
     }
     current = targetStep;
+    currentAngle = current % stepsPerRev;
 }
 
 void LinkMotor::jointAngle(float degrees) {

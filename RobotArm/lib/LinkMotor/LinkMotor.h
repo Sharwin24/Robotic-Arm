@@ -6,7 +6,6 @@
 class LinkMotor {
    private:
     // Constructor Arguments
-    int nemaMotorType;
     int linkNumber;
     int stepPin;
     int dirPin;
@@ -14,6 +13,7 @@ class LinkMotor {
     // Control Variables
     bool currentDir;  // True -> CW, False -> CCW
     int current;
+    float currentAngle;
     int target;
     int previous;
     long previousChangeTime;
@@ -23,9 +23,8 @@ class LinkMotor {
     long currentDelay;
 
    public:
-    LinkMotor(int _linkNumber, int _nemaMotorType, int _stepPin, int _dirPin, int _limitSwitchPin) {
+    LinkMotor(int _linkNumber, int _stepPin, int _dirPin, int _limitSwitchPin) {
         linkNumber = _linkNumber;
-        nemaMotorType = _nemaMotorType;
         stepPin = _stepPin;
         dirPin = _dirPin;
         limitSwitchPin = _limitSwitchPin;

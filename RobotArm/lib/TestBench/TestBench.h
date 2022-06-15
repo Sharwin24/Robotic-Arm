@@ -19,15 +19,13 @@ class TestBench {
         RobotArm = m;
     }
 
-    void testLinkMotors() {
-        RobotArm.link1ToAngle(0);
-        delay(1000);
-        RobotArm.link1ToAngle(90);
-        delay(1000);
-        RobotArm.link1ToAngle(115);
-        delay(1000);
-        RobotArm.link1ToAngle(0);
-        delay(1000);
+    void twoAngleTest(float angle1, float angle2, long d = 1000) {
+        RobotArm.link1ToAngle(angle1);
+        delay(d);
+        RobotArm.link1ToAngle(angle2);
+        delay(d);
+        RobotArm.link1ToAngle(angle1);
+        delay(d);
     }
 };
 

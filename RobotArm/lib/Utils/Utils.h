@@ -6,11 +6,11 @@
 #include <RotationMatrix.h>
 #include <HomogeneousTransform.h>
 
+const float stepsPerRev = 800.0;
+
 void initSerialMonitor();
 
 long getDelayFromSpeed(long s);
-
-void waitForSerialInput();
 
 // Steps per revolution (set on driver)
 // Steps per revolution (SPR) -> angle (Degrees)

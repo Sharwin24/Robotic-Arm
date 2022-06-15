@@ -16,5 +16,5 @@ void setup() {
 }
 
 void loop() {
-    tb.testLinkMotors();
+    tb.twoAngleTest(0, 90);
 }

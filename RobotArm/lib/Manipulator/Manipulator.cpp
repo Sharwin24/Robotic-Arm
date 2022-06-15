@@ -29,7 +29,7 @@ Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
     Vector r3e = Vector(endEffectorLength, 0.0, 0.0);
     float R3e0[] = {0.0, 0.0, 1.0};
     float R3e1[] = {0.0, -1.0, 0.0};
-    float R3e2[] = {1.0, 0.0, 0.0};
+    float R3e2[] = {1.0, 0.0, 0.0};  // Ry(90) -> Rz(180)
     RotationMatrix R3e = RotationMatrix(R3e0, R3e1, R3e2);
     HomogeneousTransform A3e = HomogeneousTransform(R3e, r3e);
 
