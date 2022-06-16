@@ -15,7 +15,7 @@ long getDelayFromSpeed(long s);
 // Steps per revolution (set on driver)
 // Steps per revolution (SPR) -> angle (Degrees)
 // SPR / 360 = steps per degree
-int degreeToSteps(float degree);
+float degreeToSteps(float degree);
 
 RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2);
 

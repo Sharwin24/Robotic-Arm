@@ -55,6 +55,8 @@ int LinkMotor::getSpeed() { return currentSpeed; }
 
 int LinkMotor::getDelay() { return currentDelay; }
 
+float LinkMotor::getAngle() { return currentAngle; }
+
 int LinkMotor::getLimitSwitch() {
     // If there is a valid limit switch pin, read it, otherwise return -1
     return limitSwitchPin != -1 ? digitalRead(limitSwitchPin) : -1;
@@ -84,8 +86,9 @@ void LinkMotor::moveTo(int targetStep) {
 }
 
 void LinkMotor::moveToAngle(float degrees) {
-    int steps = degreeToSteps(degrees);
-    moveTo(steps);
+    float steps = degreeToSteps(degrees) / outputGearRatio;
+    int stepsInt = floorf(steps);
+    moveTo(stepsInt);
 }
 
 int LinkMotor::calibrate() {

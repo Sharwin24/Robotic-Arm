@@ -7,6 +7,7 @@
 void initSerialMonitor() {
     Serial.begin(9600);
     Serial.flush();
+    Serial.println();
 }
 
 long getDelayFromSpeed(long s) {
@@ -15,9 +16,9 @@ long getDelayFromSpeed(long s) {
     return microseconds;
 }
 
-int degreeToSteps(float degree) {
+float degreeToSteps(float degree) {
     // spr / 360 = steps per degree * degree
-    return floorf((stepsPerRev / 360.0) * degree);
+    return (stepsPerRev / 360.0) * degree;
 }
 
 RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2) {

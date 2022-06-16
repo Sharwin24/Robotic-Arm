@@ -8,13 +8,15 @@
 // Construct a 3-Revolute Link Planar Manipulator with default link lengths
 // Default constants (link lengths, motor/sensor pins) are in Manipulator.h
 // Construct a TestBench to run pre-made tests on your Manipulator
-Manipulator RRRManipulator = Manipulator();
-TestBench tb = TestBench(RRRManipulator);
+TestBench tb = TestBench();
+Manipulator RRRManipulator = Manipulator(L1, L2, L3);
 
 void setup() {
     initSerialMonitor();
+    RRRManipulator.init();
+    Serial.println("Manipulator Initialized");
 }
 
 void loop() {
-    tb.twoAngleTest(0, 90);
+    // tb.twoAngleTest(RRRManipulator, 0, 90);
 }

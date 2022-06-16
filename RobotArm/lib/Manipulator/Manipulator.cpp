@@ -69,7 +69,7 @@ void Manipulator::moveToAngles(float q1, float q2, float q3) {
     // Update all Links until target is acheived
     updateLinks();
     // Update EE pos
-    EEpos = ForwardKinematics(q1, q2, q3);
+    EEPos = ForwardKinematics(q1, q2, q3);
 }
 
 void Manipulator::moveToJointAngles(JointAngles jointAngleTargets) {

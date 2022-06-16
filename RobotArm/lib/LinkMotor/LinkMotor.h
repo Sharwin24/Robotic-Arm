@@ -37,7 +37,7 @@ class LinkMotor {
         stepPin = _stepPin;
         dirPin = _dirPin;
         limitSwitchPin = _limitSwitchPin;
-        outputGearRatio = 1;
+        outputGearRatio = 1.0;
     }
 
     void init();
@@ -49,6 +49,8 @@ class LinkMotor {
     int getDelay();
 
     int getLimitSwitch();
+
+    float getAngle();
 
     void setSpeed(long speed);
 

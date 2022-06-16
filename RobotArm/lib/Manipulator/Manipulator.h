@@ -2,9 +2,9 @@
 #define Manipulator_h
 #include <Arduino.h>
 #include <LinkMotor.h>
-#include <Utils.h>
 #include <Position.h>
 #include <JointAngles.h>
+#include <Utils.h>
 
 // TODO: Wire Diagram
 
@@ -12,7 +12,7 @@
 const int L1 = 125;  // length is in mm
 const int link1DirPin = 3;
 const int link1StepPin = 2;
-const int link1LimitSwitchPin = 4;
+const int link1LimitSwitchPin = -1;
 // Link 2
 const int L2 = 100;
 const int link2DirPin = 5;
@@ -31,37 +31,33 @@ const int endEffectorLength = 10;
 class Manipulator {
    private:
     int numLinks;
-    LinkMotor Link1 = LinkMotor(1, link1StepPin, link1DirPin, link1LimitSwitchPin);
-    LinkMotor Link2 = LinkMotor(2, link2StepPin, link2DirPin, link2LimitSwitchPin);
+    LinkMotor Link1 = LinkMotor(1, link1StepPin, link1DirPin, link1LimitSwitchPin, 0.2);
+    LinkMotor Link2 = LinkMotor(2, link2StepPin, link2DirPin, link2LimitSwitchPin, 0.2);
     LinkMotor Link3 = LinkMotor(3, link3StepPin, link3DirPin, link3LimitSwitchPin);
     float link1Length;
     float link2Length;
     float link3Length;
     Position EEPos;
-    // LinkMotor links[3];  // FIXME: Build issue
 
    public:
     Manipulator() {
-        // Default Constructor uses default link lengths
         Manipulator(L1, L2, L3);
     }
     Manipulator(float _link1Length, float _link2Length, float _link3Length) {
-        Serial.println("Initializing 3-Link Manipulator");
         numLinks = 3;
         link1Length = _link1Length;
         link2Length = _link2Length;
         link3Length = _link3Length;
         EEPos = ForwardKinematics(0, 0, 0);
-        Serial.println("Initializing Motors");
+    }
+
+    void init() {
         Link1.init();
         Link2.init();
         Link3.init();
-        Serial.println("Calibrating Motors");
         Link1.calibrate();
         Link2.calibrate();
         Link3.calibrate();
-        Serial.println("Manipulator Setup Complete");
-        delay(500);
     }
 
     Position getEEPos() {
