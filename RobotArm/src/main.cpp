@@ -5,11 +5,11 @@
 #include <Manipulator.h>
 #include <TestBench.h>
 
-// Construct a 3-Revolute Link Planar Manipulator with default link lengths
-// Default constants (link lengths, motor/sensor pins) are in Manipulator.h
 // Construct a TestBench to run pre-made tests on your Manipulator
 TestBench tb = TestBench();
-Manipulator RRRManipulator = Manipulator(L1, L2, L3);
+// Construct a 3-Revolute Link Planar Manipulator with default link lengths
+// Default constants (link lengths, link speed, motor/sensor pins, motor-driver settings, etc.) are in Utils.h
+Manipulator RRRManipulator = Manipulator();
 
 void setup() {
     initSerialMonitor();
