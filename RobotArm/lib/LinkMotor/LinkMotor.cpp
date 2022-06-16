@@ -147,6 +147,7 @@ void LinkMotor::update() {
             }
         }
     }
+    currentAngle = current % stepsPerRev;
 }
 
 bool LinkMotor::isMoving() { return current != target; }

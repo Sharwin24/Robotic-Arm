@@ -23,6 +23,15 @@ float degreeToSteps(float degree) {
     return (stepsPerRev / 360.0) * degree;
 }
 
+void printLink1Link2(float q1, float q2) {
+    Serial.println();
+    Serial.print("Link 1 -> ");
+    Serial.print(q1);
+    Serial.print(" | ");
+    Serial.print("Link 2 -> ");
+    Serial.println(q2);
+}
+
 RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2) {
     float r0[] = {0.0, 0.0, 0.0};
     float r1[] = {0.0, 0.0, 0.0};

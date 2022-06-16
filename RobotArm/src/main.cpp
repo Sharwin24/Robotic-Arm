@@ -21,5 +21,5 @@ void setup() {
 
 void loop() {
     // NOTE: TestBench methods are blocking
-    tb.twoAngleTest(RRRManipulator, 0, 90);
+    tb.link1TwoAngles(RRRManipulator, 0, 90);
 }

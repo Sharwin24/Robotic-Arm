@@ -45,6 +45,10 @@ class Manipulator {
         return EEPos;
     }
 
+    void updateEEPos(float q1, float q2, float q3) {
+        EEPos = ForwardKinematics(q1, q2, q3);
+    }
+
     // Math Functions
     Position ForwardKinematics(float q1, float q2, float q3);
 

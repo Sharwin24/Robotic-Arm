@@ -33,6 +33,9 @@ long getDelayFromSpeed(float s);
 
 float degreeToSteps(float degree);
 
+void printLink1Link2(float q1, float q2);
+
+// Matrix Methods
 RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2);
 
 RotationMatrix transpose(RotationMatrix R);

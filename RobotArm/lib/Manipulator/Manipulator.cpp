@@ -59,9 +59,9 @@ JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget) {
 // Movement Functions
 void Manipulator::moveToAngles(float q1, float q2, float q3) {
     // Obtain target angles as steps
-    int q1Steps = degreeToSteps(q1);
-    int q2Steps = degreeToSteps(q2);
-    int q3Steps = degreeToSteps(q3);
+    int q1Steps = floorf(degreeToSteps(q1));
+    int q2Steps = floorf(degreeToSteps(q2));
+    int q3Steps = floorf(degreeToSteps(q3));
     // Set the target step for each Link
     Link1.setTarget(q1Steps);
     Link2.setTarget(q2Steps);
@@ -69,7 +69,7 @@ void Manipulator::moveToAngles(float q1, float q2, float q3) {
     // Update all Links until target is acheived
     updateLinks();
     // Update EE pos
-    EEPos = ForwardKinematics(q1, q2, q3);
+    updateEEPos();
 }
 
 void Manipulator::moveToJointAngles(JointAngles jointAngleTargets) {
@@ -101,12 +101,15 @@ void Manipulator::updateLinks() {
 // Individual Link functions
 void Manipulator::link1ToAngle(float degrees) {
     Link1.moveToAngle(degrees);
+    updateEEPos(degrees, Link2.getAngle(), Link3.getAngle())
 }
 
 void Manipulator::link2ToAngle(float degrees) {
     Link2.moveToAngle(degrees);
+    updateEEPos(Link1.getAngle(), degrees, Link3.getAngle())
 }
 
 void Manipulator::link3ToAngle(float degrees) {
     Link3.moveToAngle(degrees);
+    updateEEPos(Link1.getAngle(), Link2.getAngle(), degrees);
 }
