@@ -10,14 +10,16 @@ void initSerialMonitor() {
     Serial.println();
 }
 
-long getDelayFromSpeed(long s) {
+long getDelayFromSpeed(float s) {
     // Converting ticks per second into a delay timing
     long microseconds = 1000000 / s;
     return microseconds;
 }
 
 float degreeToSteps(float degree) {
-    // spr / 360 = steps per degree * degree
+    // Steps per revolution (set on driver)
+    // Steps per revolution (SPR) -> angle (Degrees)
+    // SPR / 360 = steps per degree * degree
     return (stepsPerRev / 360.0) * degree;
 }
 

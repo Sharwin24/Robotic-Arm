@@ -6,15 +6,13 @@
 #include <RotationMatrix.h>
 #include <HomogeneousTransform.h>
 
-const int stepsPerRev = 800;
+const int stepsPerRev = 6400;
+const float RPM = 75.0;  // Link Speed
 
 void initSerialMonitor();
 
-long getDelayFromSpeed(long s);
+long getDelayFromSpeed(float s);
 
-// Steps per revolution (set on driver)
-// Steps per revolution (SPR) -> angle (Degrees)
-// SPR / 360 = steps per degree
 float degreeToSteps(float degree);
 
 RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2);

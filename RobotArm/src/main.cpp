@@ -15,8 +15,11 @@ void setup() {
     initSerialMonitor();
     RRRManipulator.init();
     Serial.println("Manipulator Initialized");
+    Serial.println("Ensure Power is connected and Links are zeroed");
+    delay(2000);
 }
 
 void loop() {
-    // tb.twoAngleTest(RRRManipulator, 0, 90);
+    // NOTE: TestBench methods are blocking
+    tb.twoAngleTest(RRRManipulator, 0, 90);
 }

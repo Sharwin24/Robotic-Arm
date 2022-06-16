@@ -4,26 +4,19 @@
 #include <Manipulator.h>
 #include <TestBench.h>
 class TestBench {
-   private:
-    bool init;
-
    public:
-    TestBench() {
-        init = true;
-    }
+    TestBench() {}
     void twoAngleTest(Manipulator RobotArm, float angle1, float angle2, long d = 1000) {
-        Serial.print("Going to Angle 1: ");
-        Serial.println(angle1);
-        RobotArm.link1ToAngle(angle1);
-        delay(d);
-        Serial.print("Going to Angle 2: ");
-        Serial.println(angle2);
-        RobotArm.link1ToAngle(angle2);
-        delay(d);
-        Serial.print("Going to Angle 1: ");
-        Serial.println(angle1);
-        RobotArm.link1ToAngle(angle1);
-        delay(d);
+        while (true) {
+            Serial.print("Going to Angle 1: ");
+            Serial.println(angle1);
+            RobotArm.link1ToAngle(angle1);
+            delay(d);
+            Serial.print("Going to Angle 2: ");
+            Serial.println(angle2);
+            RobotArm.link1ToAngle(angle2);
+            delay(d);
+        }
     }
 
     void concurrentMovementTest(Manipulator RobotArm, float xTarget, float yTarget, long d = 1000) {

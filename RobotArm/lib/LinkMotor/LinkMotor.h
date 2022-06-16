@@ -20,7 +20,7 @@ class LinkMotor {
     long previousChangeTime;
     bool currentlyRunning;
     long maxSpeed;
-    int currentSpeed;
+    float currentSpeed;
     long currentDelay;
 
    public:
@@ -44,7 +44,7 @@ class LinkMotor {
 
     int calibrate();
 
-    int getSpeed();
+    float getSpeed();
 
     int getDelay();
 
@@ -52,7 +52,7 @@ class LinkMotor {
 
     float getAngle();
 
-    void setSpeed(long speed);
+    void setSpeed(float speed);
 
     void setDirection(bool CW);
 
