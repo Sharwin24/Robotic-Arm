@@ -37,7 +37,7 @@ class Manipulator {
     float link1Length;
     float link2Length;
     float link3Length;
-    // LinkMotor links[3]; // FIXME: Build issue
+    // LinkMotor links[3];  // FIXME: Build issue
 
    public:
     Manipulator() {
@@ -50,7 +50,6 @@ class Manipulator {
         link1Length = _link1Length;
         link2Length = _link2Length;
         link3Length = _link3Length;
-        // LinkMotor links[] = {Link1, Link2, Link3};
         Serial.println("Initializing Motors");
         Link1.init();
         Link2.init();
@@ -76,6 +75,15 @@ class Manipulator {
     void moveToXY(float xTarget, float yTarget);
 
     void moveToPosition(Position positionTarget);
+
+    void updateLinks() {
+        // LinkMotor links[] = {Link1, Link2, Link3};
+        while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
+            Link1.update();
+            Link2.update();
+            Link3.update();
+        }
+    }
 
     // Individual Link functions
     void link1ToAngle(float degrees);

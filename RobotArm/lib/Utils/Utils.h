@@ -6,7 +6,7 @@
 #include <RotationMatrix.h>
 #include <HomogeneousTransform.h>
 
-const float stepsPerRev = 800.0;
+const int stepsPerRev = 800;
 
 void initSerialMonitor();
 

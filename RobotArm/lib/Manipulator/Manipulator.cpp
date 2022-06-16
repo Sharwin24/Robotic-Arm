@@ -58,6 +58,16 @@ JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget) {
 
 // Movement Functions
 void Manipulator::moveToAngles(float q1, float q2, float q3) {
+    // Obtain target angles as steps
+    int q1Steps = degreeToSteps(q1);
+    int q2Steps = degreeToSteps(q2);
+    int q3Steps = degreeToSteps(q3);
+    // Set the target step for each Link
+    Link1.setTarget(q1Steps);
+    Link2.setTarget(q2Steps);
+    Link3.setTarget(q3Steps);
+    // Update all Links until target is acheived
+    updateLinks();
 }
 
 void Manipulator::moveToJointAngles(JointAngles jointAngleTargets) {
@@ -71,15 +81,28 @@ void Manipulator::moveToPosition(Position positionTarget) {
     moveToXY(positionTarget.x, positionTarget.y);
 }
 
+void Manipulator::updateLinks() {
+    // We need to move Link 1 first because
+    // we obtain invalid positions when Link 1 is at
+    // 0 (or low enough) and Link 2 needs to acheive a negative angle
+    while (Link1.isMoving()) {
+        Link1.update();
+    }
+    while (Link2.isMoving() || Link3.isMoving()) {
+        Link2.update();
+        Link3.update();
+    }
+}
+
 // Individual Link functions
 void Manipulator::link1ToAngle(float degrees) {
-    Link1.jointAngle(degrees);
+    Link1.moveToAngle(degrees);
 }
 
 void Manipulator::link2ToAngle(float degrees) {
-    Link2.jointAngle(degrees);
+    Link2.moveToAngle(degrees);
 }
 
 void Manipulator::link3ToAngle(float degrees) {
-    Link3.jointAngle(degrees);
+    Link3.moveToAngle(degrees);
 }

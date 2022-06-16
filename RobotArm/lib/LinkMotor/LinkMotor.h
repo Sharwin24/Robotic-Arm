@@ -10,6 +10,7 @@ class LinkMotor {
     int stepPin;
     int dirPin;
     int limitSwitchPin;
+    float outputGearRatio;
     // Control Variables
     bool currentDir;  // True -> CW, False -> CCW
     int current;
@@ -23,11 +24,20 @@ class LinkMotor {
     long currentDelay;
 
    public:
-    LinkMotor(int _linkNumber, int _stepPin, int _dirPin, int _limitSwitchPin) {
+    LinkMotor(int _linkNumber, int _stepPin, int _dirPin, int _limitSwitchPin, float _outputGearRatio) {
         linkNumber = _linkNumber;
         stepPin = _stepPin;
         dirPin = _dirPin;
         limitSwitchPin = _limitSwitchPin;
+        outputGearRatio = _outputGearRatio;
+    }
+
+    LinkMotor(int _linkNumber, int _stepPin, int _dirPin, int _limitSwitchPin = -1) {
+        linkNumber = _linkNumber;
+        stepPin = _stepPin;
+        dirPin = _dirPin;
+        limitSwitchPin = _limitSwitchPin;
+        outputGearRatio = 1;
     }
 
     void init();
@@ -50,7 +60,7 @@ class LinkMotor {
 
     void moveTo(int targetStep);
 
-    void jointAngle(float degrees);
+    void moveToAngle(float degrees);
 
     void update();
 

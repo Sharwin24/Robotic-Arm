@@ -2,13 +2,16 @@
 #include <LinkMotor.h>
 #include <Utils.h>
 
+// const int RPM = 100;
+
 // Docs in header file
 
 void LinkMotor::init() {
     current = 0;
-    currentAngle = current % stepsPerRev;
+    currentAngle = 0;  // current % stepsPerRev;
     target = 0;
-    currentSpeed = 1000;
+    currentSpeed = 1000;  // Speed is measured in steps per second
+    // currentSpeed = stepsPerRev * RPM * (1 / 60.0);
     currentDelay = getDelayFromSpeed(currentSpeed);
     previousChangeTime = micros();
     currentlyRunning = false;
@@ -21,6 +24,7 @@ void LinkMotor::init() {
     delay(500);
 }
 
+// Sets the speed (steps per sec) and calculates the required pulse delay
 void LinkMotor::setSpeed(long speed) {
     currentSpeed = speed;
     currentDelay = getDelayFromSpeed(speed);
@@ -39,16 +43,12 @@ void LinkMotor::setTarget(int targetStep) {
     if (current != target) {
         return;  // Motor is currently moving
     }
-    if (targetStep < 0) {
-        return;  // TODO: Implement negative angles
-    }
+    // if (targetStep < 0) {
+    //     return; // Enable Negative Angles
+    // }
     previous = current;
     target = targetStep;
-    if (current > target) {
-        setDirection(false);
-    } else {
-        setDirection(true);
-    }
+    setDirection(current < target);  // True -> CW, False -> CCW
 }
 
 int LinkMotor::getSpeed() { return currentSpeed; }
@@ -56,9 +56,11 @@ int LinkMotor::getSpeed() { return currentSpeed; }
 int LinkMotor::getDelay() { return currentDelay; }
 
 int LinkMotor::getLimitSwitch() {
+    // If there is a valid limit switch pin, read it, otherwise return -1
     return limitSwitchPin != -1 ? digitalRead(limitSwitchPin) : -1;
 }
 
+// Pulse the motor with the current delay value calculated from current speed
 void LinkMotor::stepMotor() {
     digitalWrite(stepPin, HIGH);
     delayMicroseconds(currentDelay);
@@ -67,16 +69,12 @@ void LinkMotor::stepMotor() {
 }
 
 void LinkMotor::moveTo(int targetStep) {
-    if (targetStep < 0) {
-        // TODO: Implement negative angles
-        Serial.print("Target step must be positive");
-        return;
-    }
-    if (current > targetStep) {
-        setDirection(false);
-    } else {
-        setDirection(true);
-    }
+    // if (targetStep < 0) {
+    //     // TODO: Implement negative angles
+    //     Serial.print("Target step must be positive");
+    //     return;
+    // }
+    setDirection(current < targetStep);  // True -> CW, False -> CCW
     int stepDifference = abs(targetStep - current);
     for (int i = 0; i < stepDifference; i++) {
         stepMotor();
@@ -85,7 +83,7 @@ void LinkMotor::moveTo(int targetStep) {
     currentAngle = current % stepsPerRev;
 }
 
-void LinkMotor::jointAngle(float degrees) {
+void LinkMotor::moveToAngle(float degrees) {
     int steps = degreeToSteps(degrees);
     moveTo(steps);
 }
