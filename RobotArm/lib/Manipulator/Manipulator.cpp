@@ -75,6 +75,8 @@ void Manipulator::moveToJointAngles(JointAngles jointAngleTargets) {
 }
 
 void Manipulator::moveToXY(float xTarget, float yTarget) {
+    JointAngles Q = InverseKinematics(xTarget, yTarget);
+    moveToAngles(Q.q1, Q.q2, Q.q3);
 }
 
 void Manipulator::moveToPosition(Position positionTarget) {

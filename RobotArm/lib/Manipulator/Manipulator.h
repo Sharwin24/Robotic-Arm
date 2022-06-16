@@ -37,6 +37,7 @@ class Manipulator {
     float link1Length;
     float link2Length;
     float link3Length;
+    Position EEPos;
     // LinkMotor links[3];  // FIXME: Build issue
 
    public:
@@ -50,6 +51,7 @@ class Manipulator {
         link1Length = _link1Length;
         link2Length = _link2Length;
         link3Length = _link3Length;
+        EEPos = ForwardKinematics(0, 0, 0);
         Serial.println("Initializing Motors");
         Link1.init();
         Link2.init();
@@ -60,6 +62,10 @@ class Manipulator {
         Link3.calibrate();
         Serial.println("Manipulator Setup Complete");
         delay(500);
+    }
+
+    Position getEEPos() {
+        return EEPos;
     }
 
     // Math Functions
@@ -76,14 +82,7 @@ class Manipulator {
 
     void moveToPosition(Position positionTarget);
 
-    void updateLinks() {
-        // LinkMotor links[] = {Link1, Link2, Link3};
-        while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
-            Link1.update();
-            Link2.update();
-            Link3.update();
-        }
-    }
+    void updateLinks();
 
     // Individual Link functions
     void link1ToAngle(float degrees);

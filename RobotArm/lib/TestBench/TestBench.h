@@ -27,6 +27,16 @@ class TestBench {
         RobotArm.link1ToAngle(angle1);
         delay(d);
     }
+
+    void concurrentMovementTest(float xTarget, float yTarget, long d = 1000) {
+        Position currPos = RobotArm.getEEPos();
+        while (true) {
+            RobotArm.moveToXY(currPos.x, currPos.y);
+            delay(d);
+            RobotArm.moveToXY(xTarget, yTarget);
+            delay(d);
+        }
+    }
 };
 
 #endif
