@@ -59,19 +59,26 @@ class TestBench {
 
     void concurrentLink1Link2(Manipulator RobotArm, float q1, float q2, long d = 1000) {
         Position currPos = RobotArm.getEEPos();
-        JointAngles currAngles = InverseKinematics(currPos.x, currPos.y);
+        JointAngles currAngles = RobotArm.InverseKinematics(currPos.x, currPos.y);
         int q1Steps = floorf(degreeToSteps(q1));
         int q2Steps = floorf(degreeToSteps(q2));
         while (true) {
-            Link1.setTarget(q1Steps);
-            Link2.setTarget(q2Steps);
+            RobotArm.setLink1Target(q1Steps);
+            RobotArm.setLink2Target(q2Steps);
             printLink1Link2(q1, q2);
-            updateLinks();
-            Link1.setTarget(floorf(degreeToSteps(currAngles.q1)));
-            Link2.setTarget(floorf(degreeToSteps(currAngles.q2)));
+            RobotArm.updateLinks();
+            RobotArm.setLink1Target(floorf(degreeToSteps(currAngles.q1)));
+            RobotArm.setLink2Target(floorf(degreeToSteps(currAngles.q2)));
             printLink1Link2(currAngles.q1, currAngles.q2);
-            updateLinks();
+            RobotArm.updateLinks();
         }
+    }
+
+    void printMatricesTest() {
+        RotationMatrix R = RotationMatrix('z', 45);
+        printMatrix(R);
+        HomogeneousTransform A = HomogeneousTransform(R, Vector(1, 2, 3));
+        printMatrix(A);
     }
 };
 
