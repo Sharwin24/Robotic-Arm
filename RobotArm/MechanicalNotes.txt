@@ -1,5 +1,3 @@
-Reprints:
-
 Base:
 - Fix Arduino Uno Mounting Holes
 - Create lowered-down space for Breadboard-Mini to be placed in
