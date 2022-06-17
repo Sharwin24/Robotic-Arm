@@ -1,0 +1,22 @@
+Reprints:
+
+Base:
+- Fix Arduino Uno Mounting Holes
+- Create lowered-down space for Breadboard-Mini to be placed in
+- Create space for 3 Motor-Drivers to be placed (vertically or horizontally) close to Arduino and Breadboard. The drivers should slide in and should not move around. They should be able to be removed with ease
+- Countersink screw holes that mount base motor
+- Add spacer to tower on motor-side (1.5mm)
+
+Link 1:
+- Countersink screw holes that mount Link 2 Motor (Nema 14)
+- Add more ziptie holes or make zipte slots much larger to allow for many zipties
+- (Maybe, if Ethan thinks necessary) Make spacer for Link 2 axle mount larger to tighten up spacing. Ethan needs to check CAD assembly to determine size increase
+- (Maybe, if Ethan thinks necessary) Allow Link 2 to have more range of motion in the negative direction (Clockwise)
+- (Maybe, not very necessary) Make mount for limit switch to be toggled when Link 2 is at its max angle when rotating in the Clockwise direction.
+
+Link 2:
+- Make spacer for Link 3 Motor Axle larger (up to 2mm larger)
+- Add more ziptie holes or make ziptie slots wider to allow for many zipties to be attached at less specific places.
+
+Link 3:
+- Parallel gripper with micro-servo motor
