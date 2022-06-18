@@ -75,10 +75,17 @@ class TestBench {
     }
 
     void printMatricesTest() {
-        RotationMatrix R = RotationMatrix('z', 45);
-        printMatrix(R);
-        HomogeneousTransform A = HomogeneousTransform(R, Vector(1, 2, 3));
-        printMatrix(A);
+        // RRRManipulator.ForwardKinematics(15, 30, 45);
+        RotationMatrix Rz = RotationMatrix('z', 45);
+        RotationMatrix Rx = RotationMatrix('x', 30);
+        printMatrix(Rz);
+        printMatrix(Rx);
+        HomogeneousTransform A0 = HomogeneousTransform(Rz, Vector(1, 2, 3));
+        HomogeneousTransform A1 = HomogeneousTransform(Rx, Vector(3, 4, 5));
+        printMatrix(A0);
+        printMatrix(A1);
+        HomogeneousTransform A01 = multiply(A0, A1);
+        printMatrix(A01);
     }
 };
 

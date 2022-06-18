@@ -39,7 +39,6 @@ Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
     HomogeneousTransform A02 = multiply(A01, A12);
     HomogeneousTransform A2e = multiply(A23, A3e);
     HomogeneousTransform A0e = multiply(A02, A2e);
-    // printMatrix(A0e);
     return Position(A0e.get(0, 3), A0e.get(1, 3));
 }
 

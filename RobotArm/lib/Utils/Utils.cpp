@@ -67,7 +67,7 @@ void printMatrix(RotationMatrix R) {
     msg.concat("(");
     msg.concat(R.getTheta());
     msg.concat(") -> ");
-    Serial.println(msg, DECIMALPRECISION);
+    Serial.println(msg);
     for (int r = 0; r < 3; r++) {
         Serial.print("|");
         for (int c = 0; c < 3; c++) {

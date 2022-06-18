@@ -17,10 +17,10 @@ void setup() {
     Serial.println("Manipulator Initialized");
     Serial.println("Ensure Power is connected and Links are zeroed");
     delay(2000);
-    RRRManipulator.ForwardKinematics(15, 30, 45);
 }
 
 void loop() {
     // NOTE: TestBench methods are blocking
     // tb.link1TwoAngles(RRRManipulator, 0, 90);
+    tb.printMatricesTest();
 }
