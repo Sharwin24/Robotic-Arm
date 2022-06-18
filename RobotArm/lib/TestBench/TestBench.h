@@ -11,11 +11,11 @@ class TestBench {
     void link1TwoAngles(Manipulator RobotArm, float angle1, float angle2, long d = 1000) {
         while (true) {
             Serial.print("Going to Angle 1: ");
-            Serial.println(angle1);
+            Serial.println(angle1, DECIMALPRECISION);
             RobotArm.link1ToAngle(angle1);
             delay(d);
             Serial.print("Going to Angle 2: ");
-            Serial.println(angle2);
+            Serial.println(angle2, DECIMALPRECISION);
             RobotArm.link1ToAngle(angle2);
             delay(d);
         }
@@ -24,11 +24,11 @@ class TestBench {
     void link2TwoAngles(Manipulator RobotArm, float angle1, float angle2, long d = 1000) {
         while (true) {
             Serial.print("Going to Angle 1: ");
-            Serial.println(angle1);
+            Serial.println(angle1, DECIMALPRECISION);
             RobotArm.link2ToAngle(angle1);
             delay(d);
             Serial.print("Going to Angle 2: ");
-            Serial.println(angle2);
+            Serial.println(angle2, DECIMALPRECISION);
             RobotArm.link2ToAngle(angle2);
             delay(d);
         }
@@ -37,11 +37,11 @@ class TestBench {
     void link3TwoAngles(Manipulator RobotArm, float angle1, float angle2, long d = 1000) {
         while (true) {
             Serial.print("Going to Angle 1: ");
-            Serial.println(angle1);
+            Serial.println(angle1, DECIMALPRECISION);
             RobotArm.link3ToAngle(angle1);
             delay(d);
             Serial.print("Going to Angle 2: ");
-            Serial.println(angle2);
+            Serial.println(angle2, DECIMALPRECISION);
             RobotArm.link3ToAngle(angle2);
             delay(d);
         }

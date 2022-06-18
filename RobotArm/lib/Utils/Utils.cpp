@@ -7,7 +7,7 @@
 void initSerialMonitor() {
     Serial.begin(9600);
     Serial.flush();
-    Serial.println();
+    Serial.println("Serial Monitor Initialized");
 }
 
 long getDelayFromSpeed(float s) {
@@ -26,10 +26,10 @@ float degreeToSteps(float degree) {
 void printLink1Link2(float q1, float q2) {
     Serial.println();
     Serial.print("Link 1 -> ");
-    Serial.print(q1);
+    Serial.print(q1, DECIMALPRECISION);
     Serial.print(" | ");
     Serial.print("Link 2 -> ");
-    Serial.println(q2);
+    Serial.println(q2, DECIMALPRECISION);
 }
 
 // Rotation Matrix Methods
@@ -67,12 +67,12 @@ void printMatrix(RotationMatrix R) {
     msg.concat("(");
     msg.concat(R.getTheta());
     msg.concat(") -> ");
-    Serial.println(msg);
+    Serial.println(msg, DECIMALPRECISION);
     for (int r = 0; r < 3; r++) {
         Serial.print("|");
         for (int c = 0; c < 3; c++) {
             Serial.print(" ");
-            Serial.print(R.get(r, c));
+            Serial.print(R.get(r, c), DECIMALPRECISION);
             Serial.print(" ");
         }
         Serial.println("|");
@@ -117,7 +117,7 @@ void printMatrix(HomogeneousTransform A) {
         Serial.print("|");
         for (int c = 0; c < 4; c++) {
             Serial.print(" ");
-            Serial.print(A.get(r, c));
+            Serial.print(A.get(r, c), DECIMALPRECISION);
             Serial.print(" ");
         }
         Serial.println("|");

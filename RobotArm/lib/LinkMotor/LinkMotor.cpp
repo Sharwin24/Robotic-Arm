@@ -74,11 +74,6 @@ void LinkMotor::stepMotor() {
 }
 
 void LinkMotor::moveTo(int targetStep) {
-    // if (targetStep < 0) {
-    //     // TODO: Implement negative angles
-    //     Serial.print("Target step must be positive");
-    //     return;
-    // }
     setDirection(current < targetStep);  // True -> CW, False -> CCW
     int stepDifference = abs(targetStep - current);
     for (int i = 0; i < stepDifference; i++) {
