@@ -15,15 +15,15 @@ Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
     float q3R = radians(q3);
     // Frame 0 -> 1
     Vector r01 = Vector(link1Length * cosf(q1R), link1Length * sinf(q1R), 0.0);
-    RotationMatrix R01 = RotationMatrix('z', q1R);
+    RotationMatrix R01 = RotationMatrix('z', q1);
     HomogeneousTransform A01 = HomogeneousTransform(R01, r01);
     // Frame 1 -> 2
     Vector r12 = Vector(link2Length * cosf(q2R), link2Length * sinf(q2R), 0.0);
-    RotationMatrix R12 = RotationMatrix('z', q2R);
+    RotationMatrix R12 = RotationMatrix('z', q2);
     HomogeneousTransform A12 = HomogeneousTransform(R12, r12);
     // Frame 2 -> 3
     Vector r23 = Vector(link3Length * cosf(q3R), link3Length * sinf(q3R), 0.0);
-    RotationMatrix R23 = RotationMatrix('z', q3R);
+    RotationMatrix R23 = RotationMatrix('z', q3);
     HomogeneousTransform A23 = HomogeneousTransform(R23, r23);
     // Frame 3 -> EE
     Vector r3e = Vector(endEffectorLength, 0.0, 0.0);
@@ -43,7 +43,7 @@ Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
 }
 
 JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget) {
-    float ell = sqrtf(sq(xTarget) + sq(yTarget));
+    float ell = sqrt(sq(xTarget) + sq(yTarget));
     float q2D = -acosf(
         (sq(ell) - sq(link1Length) - sq(link2Length)) /
         (2 * link1Length * link2Length));

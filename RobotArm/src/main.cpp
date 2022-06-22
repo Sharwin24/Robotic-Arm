@@ -23,4 +23,5 @@ void loop() {
     // NOTE: TestBench methods are blocking
     tb.link1TwoAngles(RRRManipulator, 0, 90);
     // tb.printMatricesTest();
+    
 }

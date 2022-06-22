@@ -76,6 +76,11 @@ class TestBench {
 
     void printMatricesTest() {
         // RRRManipulator.ForwardKinematics(15, 30, 45);
+        // r01 = [L1*C1, L1*S1, 0], R01 = Rz(q1)
+        // r12 = [L2*C1, L2*S1, 0], R12 = Rz(q2)
+        // r23 = [L3*C1, L3*S1, 0], R23 = Rz(q3)
+        // r3e = [Le, 0, 0], R3e = Ry(90) * Rz(180)
+
         RotationMatrix Rz = RotationMatrix('z', 45);
         RotationMatrix Rx = RotationMatrix('x', 30);
         printMatrix(Rz);
