@@ -8,13 +8,7 @@ void LinkMotor::init() {
     current = 0;
     currentAngle = 0.0;  // current % stepsPerRev;
     target = 0;
-    // currentSpeed = 1000;  // Speed is measured in steps per second
-    // steps per rev * revs per min = steps per min * 1 min per 60 seconds = steps per seconds
-    if (linkNumber == 1 || linkNumber == 2) {
-        currentSpeed = stepsPerRev * RPM * (1 / 60.0);
-    } else {
-        currentSpeed = stepsPerRev * (RPM / 2.0) * (1 / 60.0);
-    }
+    currentSpeed = stepsPerRev * RPM * (1 / 60.0);  // Speed is measured in steps per second
     currentDelay = getDelayFromSpeed(currentSpeed);
     previousChangeTime = micros();
     currentlyRunning = false;
