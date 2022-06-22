@@ -15,7 +15,7 @@ void setup() {
     initSerialMonitor();
     RRRManipulator.init();
     Serial.println("Manipulator Initialized");
-    Serial.println("Ensure [ower is connected and links are zeroed");
+    Serial.println("Ensure Power is connected and links are zeroed");
     Serial.println("Disconnect power if mechanical failure occurs");
     delay(3000);
     Serial.println("Executing Control Loop");
@@ -23,6 +23,6 @@ void setup() {
 
 void loop() {
     // NOTE: TestBench methods are blocking
-    // tb.link1TwoAngles(RRRManipulator, 0, 90);
+    tb.link3TwoAngles(RRRManipulator, 0.0, 45.0);
     // tb.printMatricesTest();
 }

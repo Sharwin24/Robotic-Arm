@@ -7,7 +7,7 @@
 #include <HomogeneousTransform.h>
 
 // Change Constants here
-const int stepsPerRev = 4000;  // Set according to motor-driver
+const int stepsPerRev = 8000;  // Set according to motor-driver
 const float RPM = 75.0;        // Link Speed
 const int DECIMALPRECISION = 4;
 // Link 1

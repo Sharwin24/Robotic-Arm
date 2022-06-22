@@ -54,7 +54,7 @@ float LinkMotor::getAngle() { return currentAngle; }
 void LinkMotor::updateAngle() {
     currentAngle = current % stepsPerRev;
     if (current < 0) {
-        currentAngle *= -1
+        currentAngle *= -1;
     }
 }
 
