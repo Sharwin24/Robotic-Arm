@@ -46,9 +46,6 @@ void LinkMotor::setTarget(int targetStep) {
     if (current != target) {
         return;  // Motor is currently moving
     }
-    // if (targetStep < 0) {
-    //     return; // Enable Negative Angles
-    // }
     previous = current;
     target = targetStep;
     setDirection(current < target);  // True -> CW, False -> CCW
@@ -59,6 +56,13 @@ float LinkMotor::getSpeed() { return currentSpeed; }
 int LinkMotor::getDelay() { return currentDelay; }
 
 float LinkMotor::getAngle() { return currentAngle; }
+
+void LinkMotor::updateAngle() {
+    currentAngle = current % stepsPerRev;
+    if (current < 0) {
+        currentAngle *= -1
+    }
+}
 
 int LinkMotor::getLimitSwitch() {
     // If there is a valid limit switch pin, read it, otherwise return -1
@@ -80,7 +84,7 @@ void LinkMotor::moveTo(int targetStep) {
         stepMotor();
     }
     current = targetStep;
-    currentAngle = current % stepsPerRev;
+    updateAngle();
 }
 
 void LinkMotor::moveToAngle(float degrees) {
@@ -140,9 +144,9 @@ void LinkMotor::update() {
             } else {
                 current--;
             }
+            updateAngle();
         }
     }
-    currentAngle = current % stepsPerRev;
 }
 
 bool LinkMotor::isMoving() { return current != target; }

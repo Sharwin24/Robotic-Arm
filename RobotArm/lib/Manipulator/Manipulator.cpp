@@ -43,17 +43,20 @@ Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
 }
 
 JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget) {
-    float ell = sqrt(sq(xTarget) + sq(yTarget));
-    float q2D = -acosf(
+    float ell = sqrtf(sq(xTarget) + sq(yTarget));
+    float q2R = -acosf(
         (sq(ell) - sq(link1Length) - sq(link2Length)) /
         (2 * link1Length * link2Length));
     float beta = acosf(
         (sq(ell) + sq(link1Length) - sq(link2Length)) /
         (2 * ell * link1Length));
     float alpha = atan2f(yTarget, xTarget);
-    float q1D = alpha + beta;  // + for elbow up, - for elbow down
+    float q1R = alpha + beta;  // + for elbow up, - for elbow down
     float phi = 270.0;
-    float q3D = phi - q1D - q2D;
+    float q3R = phi - q1R - q2R;
+    float q1D = degrees(q1R);
+    float q2D = degrees(q2R);
+    float q3D = degrees(q3R);
     return JointAngles(q1D, q2D, q3D);
 }
 

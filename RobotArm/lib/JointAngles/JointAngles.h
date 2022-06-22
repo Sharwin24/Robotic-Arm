@@ -1,5 +1,7 @@
 #ifndef JointAngles_h
 #define JointAngles_h
+
+// Class to group each joint angle together (in degrees)
 class JointAngles {
    public:
     float q1;
