@@ -2,6 +2,11 @@
 #define TestBench_h
 #include <Arduino.h>
 #include <Manipulator.h>
+#include <Position.h>
+#include <JointAngles.h>
+#include <Vector.h>
+#include <RotationMatrix.h>
+#include <HomogeneousTransform.h>
 #include <TestBench.h>
 #include <Utils.h>
 
@@ -10,11 +15,11 @@ class TestBench {
     TestBench() {}
     void link1TwoAngles(Manipulator RobotArm, float angle1, float angle2, long d = 1000) {
         while (true) {
-            Serial.print("Going to Angle 1: ");
+            Serial.print("Link 1 -> ");
             Serial.println(angle1, DECIMALPRECISION);
             RobotArm.link1ToAngle(angle1);
             delay(d);
-            Serial.print("Going to Angle 2: ");
+            Serial.print("Link 1 -> ");
             Serial.println(angle2, DECIMALPRECISION);
             RobotArm.link1ToAngle(angle2);
             delay(d);
@@ -23,11 +28,11 @@ class TestBench {
 
     void link2TwoAngles(Manipulator RobotArm, float angle1, float angle2, long d = 1000) {
         while (true) {
-            Serial.print("Going to Angle 1: ");
+            Serial.print("Link 2 -> ");
             Serial.println(angle1, DECIMALPRECISION);
             RobotArm.link2ToAngle(angle1);
             delay(d);
-            Serial.print("Going to Angle 2: ");
+            Serial.print("Link 2 -> ");
             Serial.println(angle2, DECIMALPRECISION);
             RobotArm.link2ToAngle(angle2);
             delay(d);
@@ -36,11 +41,11 @@ class TestBench {
 
     void link3TwoAngles(Manipulator RobotArm, float angle1, float angle2, long d = 1000) {
         while (true) {
-            Serial.print("Going to Angle 1: ");
+            Serial.print("Link 3 -> ");
             Serial.println(angle1, DECIMALPRECISION);
             RobotArm.link3ToAngle(angle1);
             delay(d);
-            Serial.print("Going to Angle 2: ");
+            Serial.print("Link 3 -> ");
             Serial.println(angle2, DECIMALPRECISION);
             RobotArm.link3ToAngle(angle2);
             delay(d);
@@ -58,19 +63,19 @@ class TestBench {
     }
 
     void concurrentLink1Link2(Manipulator RobotArm, float q1, float q2, long d = 1000) {
-        Position currPos = RobotArm.getEEPos();
-        JointAngles currAngles = RobotArm.InverseKinematics(currPos.x, currPos.y);
-        int q1Steps = floorf(degreeToSteps(q1));
-        int q2Steps = floorf(degreeToSteps(q2));
+        int q1Steps = round(degreeToSteps(q1));
+        int q2Steps = round(degreeToSteps(q2));
         while (true) {
             RobotArm.setLink1Target(q1Steps);
             RobotArm.setLink2Target(q2Steps);
             printLink1Link2(q1, q2);
             RobotArm.updateLinks();
-            RobotArm.setLink1Target(floorf(degreeToSteps(currAngles.q1)));
-            RobotArm.setLink2Target(floorf(degreeToSteps(currAngles.q2)));
-            printLink1Link2(currAngles.q1, currAngles.q2);
+            delay(d);
+            RobotArm.setLink1Target(0.0);
+            RobotArm.setLink2Target(0.0);
+            printLink1Link2(0.0, 0.0);
             RobotArm.updateLinks();
+            delay(d);
         }
     }
 

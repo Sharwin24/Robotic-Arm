@@ -48,6 +48,8 @@ class LinkMotor {
 
     int getDelay();
 
+    float getGR();
+
     int getLimitSwitch();
 
     float getAngle();

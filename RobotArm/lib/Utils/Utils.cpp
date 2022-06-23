@@ -19,7 +19,7 @@ long getDelayFromSpeed(float s) {
 float degreeToSteps(float degree) {
     // Steps per revolution (set on driver)
     // Steps per revolution (SPR) -> angle (Degrees)
-    // SPR / 360 = steps per degree * degree
+    // SPR * 1 / 360 = steps per degree * degree
     return (stepsPerRev / 360.0) * degree;
 }
 

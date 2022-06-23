@@ -112,6 +112,10 @@ void Manipulator::setLink1Target(int targetStep) {
     Link1.setTarget(targetStep);
 }
 
+float Manipulator::getLink1GR() {
+    return Link1.getGR();
+}
+
 void Manipulator::link2ToAngle(float degrees) {
     Link2.moveToAngle(degrees);
     updateEEPos(Link1.getAngle(), degrees, Link3.getAngle());
@@ -121,6 +125,10 @@ void Manipulator::setLink2Target(int targetStep) {
     Link2.setTarget(targetStep);
 }
 
+float Manipulator::getLink2GR() {
+    return Link2.getGR();
+}
+
 void Manipulator::link3ToAngle(float degrees) {
     Link3.moveToAngle(degrees);
     updateEEPos(Link1.getAngle(), Link2.getAngle(), degrees);
@@ -128,4 +136,8 @@ void Manipulator::link3ToAngle(float degrees) {
 
 void Manipulator::setLink3Target(int targetStep) {
     Link3.setTarget(targetStep);
+}
+
+float Manipulator::getLink3GR() {
+    return Link3.getGR();
 }

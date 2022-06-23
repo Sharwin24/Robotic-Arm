@@ -8,7 +8,7 @@ void LinkMotor::init() {
     current = 0;
     currentAngle = 0.0;  // current % stepsPerRev;
     target = 0;
-    currentSpeed = stepsPerRev * RPM * (1 / 60.0);  // Speed is measured in steps per second
+    currentSpeed = stepsPerRev * RPM * (1.0 / 60.0);  // Speed is measured in steps per second
     currentDelay = getDelayFromSpeed(currentSpeed);
     previousChangeTime = micros();
     currentlyRunning = false;
@@ -41,7 +41,7 @@ void LinkMotor::setTarget(int targetStep) {
         return;  // Motor is currently moving
     }
     previous = current;
-    target = targetStep;
+    target = targetStep * outputGearRatio;
     setDirection(current < target);  // True -> CW, False -> CCW
 }
 
@@ -50,6 +50,8 @@ float LinkMotor::getSpeed() { return currentSpeed; }
 int LinkMotor::getDelay() { return currentDelay; }
 
 float LinkMotor::getAngle() { return currentAngle; }
+
+float LinkMotor::getGR() { return outputGearRatio; }
 
 void LinkMotor::updateAngle() {
     currentAngle = current % stepsPerRev;

@@ -23,6 +23,7 @@ void setup() {
 
 void loop() {
     // NOTE: TestBench methods are blocking
-    tb.link3TwoAngles(RRRManipulator, 0.0, 45.0);
+    tb.link2TwoAngles(RRRManipulator, 0.0, 45.0);
+    // tb.concurrentLink1Link2(RRRManipulator, 45, 45);
     // tb.printMatricesTest();
 }
