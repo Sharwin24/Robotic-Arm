@@ -93,11 +93,10 @@ void Manipulator::updateLinks() {
     // We need to move Link 1 first because
     // we obtain invalid positions when Link 1 is at
     // 0 (or low enough) and Link 2 needs to acheive a negative angle
-    // while (Link1.isMoving()) {
-    //     Link1.update();
-    // }
-    while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
+    while (Link1.isMoving()) {
         Link1.update();
+    }
+    while (Link2.isMoving() || Link3.isMoving()) {
         Link2.update();
         Link3.update();
     }
