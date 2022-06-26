@@ -45,6 +45,8 @@ void LinkMotor::setTarget(int targetStep) {
     setDirection(current < target);  // True -> CW, False -> CCW
 }
 
+float LinkMotor::getTarget() { return target; }
+
 float LinkMotor::getSpeed() { return currentSpeed; }
 
 int LinkMotor::getDelay() { return currentDelay; }
@@ -54,7 +56,8 @@ float LinkMotor::getAngle() { return currentAngle; }
 float LinkMotor::getGR() { return outputGearRatio; }
 
 void LinkMotor::updateAngle() {
-    currentAngle = current % stepsPerRev;
+    currentAngle = abs(current % round(stepsPerRev));
+    currentAngle /= (stepsPerRev / 360.0);
     if (current < 0) {
         currentAngle *= -1;
     }
@@ -81,12 +84,16 @@ void LinkMotor::moveTo(int targetStep) {
     }
     current = targetStep;
     updateAngle();
+    Serial.println(targetStep);
+    Serial.print(current, DECIMALPRECISION);
+    Serial.print(" currentSteps | ");
+    Serial.print(currentAngle, DECIMALPRECISION);
+    Serial.println(" currentAngle");
 }
 
 void LinkMotor::moveToAngle(float degrees) {
-    float steps = degreeToSteps(degrees) * outputGearRatio;
-    int stepsInt = floorf(steps);
-    moveTo(stepsInt);
+    float steps = round(degreeToSteps(degrees) * outputGearRatio);
+    moveTo(steps);
 }
 
 int LinkMotor::calibrate() {

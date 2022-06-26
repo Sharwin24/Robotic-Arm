@@ -93,6 +93,9 @@ void Manipulator::updateLinks() {
     // We need to move Link 1 first because
     // we obtain invalid positions when Link 1 is at
     // 0 (or low enough) and Link 2 needs to acheive a negative angle
+    int target1 = Link1.getTarget();
+    int target2 = Link2.getTarget();
+    int target3 = Link3.getTarget();
     while (Link1.isMoving()) {
         Link1.update();
     }
@@ -103,39 +106,48 @@ void Manipulator::updateLinks() {
 }
 
 // Individual Link functions
-void Manipulator::link1ToAngle(float degrees) {
-    Link1.moveToAngle(degrees);
-    updateEEPos(degrees, Link2.getAngle(), Link3.getAngle());
-}
-
 void Manipulator::setLink1Target(int targetStep) {
     Link1.setTarget(targetStep);
-}
-
-float Manipulator::getLink1GR() {
-    return Link1.getGR();
-}
-
-void Manipulator::link2ToAngle(float degrees) {
-    Link2.moveToAngle(degrees);
-    updateEEPos(Link1.getAngle(), degrees, Link3.getAngle());
 }
 
 void Manipulator::setLink2Target(int targetStep) {
     Link2.setTarget(targetStep);
 }
 
-float Manipulator::getLink2GR() {
-    return Link2.getGR();
+void Manipulator::setLink3Target(int targetStep) {
+    Link3.setTarget(targetStep);
+}
+
+void Manipulator::link1ToAngle(float degrees) {
+    // Link1.moveToAngle(degrees);
+    int steps = round(degreeToSteps(degrees));
+    Link1.setTarget(steps);
+    Link1.waitToStop();
+    updateEEPos(degrees, Link2.getAngle(), Link3.getAngle());
+}
+
+void Manipulator::link2ToAngle(float degrees) {
+    // Link2.moveToAngle(degrees);
+    int steps = round(degreeToSteps(degrees));
+    Link2.setTarget(steps);
+    Link2.waitToStop();
+    updateEEPos(Link1.getAngle(), degrees, Link3.getAngle());
 }
 
 void Manipulator::link3ToAngle(float degrees) {
-    Link3.moveToAngle(degrees);
+    // Link3.moveToAngle(degrees);
+    int steps = round(degreeToSteps(degrees));
+    Link3.setTarget(steps);
+    Link3.waitToStop();
     updateEEPos(Link1.getAngle(), Link2.getAngle(), degrees);
 }
 
-void Manipulator::setLink3Target(int targetStep) {
-    Link3.setTarget(targetStep);
+float Manipulator::getLink1GR() {
+    return Link1.getGR();
+}
+
+float Manipulator::getLink2GR() {
+    return Link2.getGR();
 }
 
 float Manipulator::getLink3GR() {

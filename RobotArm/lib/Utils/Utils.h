@@ -7,9 +7,9 @@
 #include <HomogeneousTransform.h>
 
 // Change Constants here
-const int stepsPerRev = 8000;  // Set according to motor-driver
-const float RPM = 75.0;        // Link Speed
-const int DECIMALPRECISION = 4;
+const float stepsPerRev = 8000.0;  // Set according to motor-driver
+const float RPM = 75.0;            // Link Speed
+const int DECIMALPRECISION = 4;    // Decimal Precision when printing
 // Link 1
 const int L1 = 125;  // length is in mm
 const int link1StepPin = 2;
@@ -34,7 +34,9 @@ long getDelayFromSpeed(float s);
 
 float degreeToSteps(float degree);
 
+void printLink(int linkNumber, float q1);
 void printLink1Link2(float q1, float q2);
+void printLink1Link2Link3(float q1, float q2, float q3);
 
 // Matrix Methods
 RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2);

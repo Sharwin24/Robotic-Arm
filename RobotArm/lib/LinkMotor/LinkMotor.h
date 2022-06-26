@@ -44,6 +44,8 @@ class LinkMotor {
 
     int calibrate();
 
+    float getTarget();
+
     float getSpeed();
 
     int getDelay();

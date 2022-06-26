@@ -23,6 +23,14 @@ float degreeToSteps(float degree) {
     return (stepsPerRev / 360.0) * degree;
 }
 
+void printLink(int linkNumber, float q1) {
+    Serial.println();
+    Serial.print("Link ");
+    Serial.print(linkNumber);
+    Serial.print(" -> ");
+    Serial.println(q1, DECIMALPRECISION);
+}
+
 void printLink1Link2(float q1, float q2) {
     Serial.println();
     Serial.print("Link 1 -> ");
@@ -30,6 +38,18 @@ void printLink1Link2(float q1, float q2) {
     Serial.print(" | ");
     Serial.print("Link 2 -> ");
     Serial.println(q2, DECIMALPRECISION);
+}
+
+void printLink1Link2Link3(float q1, float q2, float q3) {
+    Serial.println();
+    Serial.print("Link 1 -> ");
+    Serial.print(q1, DECIMALPRECISION);
+    Serial.print(" | ");
+    Serial.print("Link 2 -> ");
+    Serial.print(q2, DECIMALPRECISION);
+    Serial.print(" | ");
+    Serial.print("Link 3 -> ");
+    Serial.println(q3, DECIMALPRECISION);
 }
 
 // Rotation Matrix Methods

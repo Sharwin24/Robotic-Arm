@@ -66,16 +66,16 @@ class Manipulator {
     void updateLinks();
 
     // Individual Link functions
-    void link1ToAngle(float degrees);
     void setLink1Target(int targetStep);
-    float getLink1GR();
-
-    void link2ToAngle(float degrees);
     void setLink2Target(int targetStep);
-    float getLink2GR();
-
-    void link3ToAngle(float degrees);
     void setLink3Target(int targetStep);
+
+    void link1ToAngle(float degrees);
+    void link2ToAngle(float degrees);
+    void link3ToAngle(float degrees);
+
+    float getLink1GR();
+    float getLink2GR();
     float getLink3GR();
 };
 #endif
