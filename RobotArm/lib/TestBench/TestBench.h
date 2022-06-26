@@ -15,43 +15,34 @@ class TestBench {
     TestBench() {}
 
     void link1ToAngle(Manipulator RobotArm, float q1, long d = 1000) {
-        int q1Steps = round(degreeToSteps(q1));
         while (true) {
-            RobotArm.setLink1Target(q1Steps);
             printLink(1, q1);
-            RobotArm.updateLinks();
+            RobotArm.link1ToAngle(q1);
             delay(d);
-            RobotArm.setLink1Target(0.0);
+            RobotArm.link1ToAngle(0.0);
             printLink(1, 0.0);
-            RobotArm.updateLinks();
             delay(d);
         }
     }
 
     void link2ToAngle(Manipulator RobotArm, float q2, long d = 1000) {
-        int q2Steps = round(degreeToSteps(q2));
         while (true) {
-            RobotArm.setLink2Target(q2Steps);
             printLink(2, q2);
-            RobotArm.updateLinks();
+            RobotArm.link2ToAngle(q2);
             delay(d);
-            RobotArm.setLink2Target(0.0);
+            RobotArm.link2ToAngle(0.0);
             printLink(2, 0.0);
-            RobotArm.updateLinks();
             delay(d);
         }
     }
 
     void link3ToAngle(Manipulator RobotArm, float q3, long d = 1000) {
-        int q3Steps = round(degreeToSteps(q3));
         while (true) {
-            RobotArm.setLink3Target(q3Steps);
             printLink(3, q3);
-            RobotArm.updateLinks();
+            RobotArm.link3ToAngle(q3);
             delay(d);
-            RobotArm.setLink3Target(0.0);
+            RobotArm.link3ToAngle(0.0);
             printLink(3, 0.0);
-            RobotArm.updateLinks();
             delay(d);
         }
     }

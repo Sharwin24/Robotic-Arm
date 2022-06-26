@@ -2,11 +2,11 @@
 #define Manipulator_h
 #include <Arduino.h>
 #include <LinkMotor.h>
+#include <Gripper.h>
 #include <Position.h>
 #include <JointAngles.h>
 #include <Utils.h>
 
-// TODO: Wire Diagram
 // TODO: Docs
 
 class Manipulator {
@@ -15,6 +15,7 @@ class Manipulator {
     LinkMotor Link1 = LinkMotor(1, link1StepPin, link1DirPin, link1LimitSwitchPin, 5.0);
     LinkMotor Link2 = LinkMotor(2, link2StepPin, link2DirPin, link2LimitSwitchPin, 5.0);
     LinkMotor Link3 = LinkMotor(3, link3StepPin, link3DirPin, link3LimitSwitchPin);
+    Gripper EE = Gripper(servoLPin, servoRPin);
     float link1Length;
     float link2Length;
     float link3Length;
@@ -39,6 +40,15 @@ class Manipulator {
         Link1.calibrate();
         Link2.calibrate();
         Link3.calibrate();
+        EE.init();
+    }
+
+    void closeEE() {
+        EE.close();
+    }
+
+    void openEE() {
+        EE.open();
     }
 
     Position getEEPos() {
@@ -77,5 +87,10 @@ class Manipulator {
     float getLink1GR();
     float getLink2GR();
     float getLink3GR();
+
+    // Joint position methods
+    float getJoint1Height();
+    float getJoint2Height();
+    float getJoint3Height();
 };
 #endif

@@ -4,7 +4,6 @@
 #include <Utils.h>
 #include <Manipulator.h>
 #include <TestBench.h>
-
 // Construct a TestBench to run pre-made tests on your Manipulator
 TestBench tb = TestBench();
 // Construct a 3-Revolute Link Planar Manipulator with default link lengths
@@ -23,7 +22,7 @@ void setup() {
 
 void loop() {
     // NOTE: TestBench methods are blocking
-    tb.link3ToAngle(RRRManipulator, 90.0);
-    // tb.concurrentLink1Link2Link3(RRRManipulator, 45.0, 90.0, -90.0);
+    // tb.link2ToAngle(RRRManipulator, 90.0);
+    tb.concurrentLink1Link2Link3(RRRManipulator, 45.0, 90.0, 90.0);
     // tb.printMatricesTest();
 }

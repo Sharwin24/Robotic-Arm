@@ -5,7 +5,6 @@
 #include <Vector.h>
 #include <RotationMatrix.h>
 #include <HomogeneousTransform.h>
-// #include <Eigen.h> // Build issues
 
 // Math Functions
 Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
@@ -90,18 +89,39 @@ void Manipulator::moveToPosition(Position positionTarget) {
 }
 
 void Manipulator::updateLinks() {
-    // We need to move Link 1 first because
-    // we obtain invalid positions when Link 1 is at
-    // 0 (or low enough) and Link 2 needs to acheive a negative angle
-    int target1 = Link1.getTarget();
-    int target2 = Link2.getTarget();
-    int target3 = Link3.getTarget();
-    while (Link1.isMoving()) {
-        Link1.update();
-    }
-    while (Link2.isMoving() || Link3.isMoving()) {
-        Link2.update();
-        Link3.update();
+    // For all possible movement combinations, determine order to move joints
+    // TODO: Test and Verify
+    float target1 = Link1.getTarget();
+    float target2 = Link2.getTarget();
+    float target3 = Link3.getTarget();
+    if (target1 >= 0 && target2 >= 0 && target3 >= 0) {
+        while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
+            Link1.update();
+            Link2.update();
+            Link3.update();
+        }
+    } else if (target2 < 0 && getJoint2Position().y < L2 + L3) {
+        while (Link1.isMoving()) {
+            Link1.update();
+        }
+        while (Link2.isMoving() || Link3.isMoving()) {
+            Link2.update();
+            Link3.update();
+        }
+    } else if (Link1.getAngle() > target1 && Link2.getAngle() < target2) {
+        while (Link2.isMoving() || Link3.isMoving()) {
+            Link2.update();
+            Link3.update();
+        }
+        while (Link1.isMoving()) {
+            Link1.update();
+        }
+    } else {
+        while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
+            Link1.update();
+            Link2.update();
+            Link3.update();
+        }
     }
 }
 
@@ -111,7 +131,11 @@ void Manipulator::setLink1Target(int targetStep) {
 }
 
 void Manipulator::setLink2Target(int targetStep) {
-    Link2.setTarget(targetStep);
+    // For some reason, Link 2 always travels half its target
+    // Math has been checked, Gear ratio has been checked,
+    // SPR on driver has been checked
+    // Potential Reasons: Nema 14 has a different steps setting?
+    Link2.setTarget(targetStep * 2.0);  // !!Temporary Fix!!
 }
 
 void Manipulator::setLink3Target(int targetStep) {
@@ -121,7 +145,7 @@ void Manipulator::setLink3Target(int targetStep) {
 void Manipulator::link1ToAngle(float degrees) {
     // Link1.moveToAngle(degrees);
     int steps = round(degreeToSteps(degrees));
-    Link1.setTarget(steps);
+    setLink1Target(steps);
     Link1.waitToStop();
     updateEEPos(degrees, Link2.getAngle(), Link3.getAngle());
 }
@@ -129,7 +153,7 @@ void Manipulator::link1ToAngle(float degrees) {
 void Manipulator::link2ToAngle(float degrees) {
     // Link2.moveToAngle(degrees);
     int steps = round(degreeToSteps(degrees));
-    Link2.setTarget(steps);
+    setLink2Target(steps);
     Link2.waitToStop();
     updateEEPos(Link1.getAngle(), degrees, Link3.getAngle());
 }
@@ -137,7 +161,7 @@ void Manipulator::link2ToAngle(float degrees) {
 void Manipulator::link3ToAngle(float degrees) {
     // Link3.moveToAngle(degrees);
     int steps = round(degreeToSteps(degrees));
-    Link3.setTarget(steps);
+    setLink3Target(steps);
     Link3.waitToStop();
     updateEEPos(Link1.getAngle(), Link2.getAngle(), degrees);
 }
@@ -152,4 +176,22 @@ float Manipulator::getLink2GR() {
 
 float Manipulator::getLink3GR() {
     return Link3.getGR();
+}
+
+// Joint position methods
+float getJoint1Position() {
+    float x = 0;
+    float y = 0;
+    return Position(x, y);
+}
+float getJoint2Position() {
+    float x = L1 * sinf(radians(Link1.getAngle()));
+    float y = L1 * cosf(radians(Link1.getAngle()));
+    return Position(x, y);
+}
+float getJoint3Height() {
+    // TODO: Verify
+    float x = L1 * sinf(radians(Link1.getAngle())) + L2 * sinf(radians(Link2.getAngle()));
+    float y = L1 * cosf(radians(Link1.getAngle())) + L2 * cosf(radians(Link2.getAngle()));
+    return Position(x, y);
 }

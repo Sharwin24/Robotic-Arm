@@ -27,6 +27,8 @@ const int link3DirPin = 7;
 const int link3LimitSwitchPin = -1;  // 13
 // End-Effector
 const int endEffectorLength = 10;
+const int servoLPin = -1;  // TODO: Wire servo motors
+const int servoRPin = -1;
 
 void initSerialMonitor();
 
@@ -50,5 +52,9 @@ HomogeneousTransform multiply(HomogeneousTransform A1, HomogeneousTransform A2);
 HomogeneousTransform transpose(HomogeneousTransform A);
 
 void printMatrix(HomogeneousTransform A);
+
+// Joint position methods
+float getJoint2Height();
+float getJoint3Height();
 
 #endif
