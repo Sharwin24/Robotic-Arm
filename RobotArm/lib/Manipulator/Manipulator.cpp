@@ -91,38 +91,64 @@ void Manipulator::moveToPosition(Position positionTarget) {
 void Manipulator::updateLinks() {
     // For all possible movement combinations, determine order to move joints
     // TODO: Test and Verify
-    float target1 = Link1.getTarget();
-    float target2 = Link2.getTarget();
-    float target3 = Link3.getTarget();
-    if (target1 >= 0 && target2 >= 0 && target3 >= 0) {
-        while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
-            Link1.update();
-            Link2.update();
-            Link3.update();
-        }
-    } else if (target2 < 0 && getJoint2Position().y < L2 + L3) {
-        while (Link1.isMoving()) {
-            Link1.update();
-        }
-        while (Link2.isMoving() || Link3.isMoving()) {
-            Link2.update();
-            Link3.update();
-        }
-    } else if (Link1.getAngle() > target1 && Link2.getAngle() < target2) {
-        while (Link2.isMoving() || Link3.isMoving()) {
-            Link2.update();
-            Link3.update();
-        }
-        while (Link1.isMoving()) {
-            Link1.update();
-        }
-    } else {
-        while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
-            Link1.update();
-            Link2.update();
-            Link3.update();
-        }
+    // CCW = 0, CW = 1
+    // 0 0 0
+    // 0 0 1
+    // 1 0 1
+    // 0 1 0
+    // 1 0 0
+    // 0 1 1
+    // 1 1 0
+    // 1 1 1
+    float q1 = Link1.getAngle();
+    float q2 = Link2.getAngle();
+    float q3 = Link3.getAngle();
+    float t1 = Link1.getTarget();
+    float t2 = Link2.getTarget();
+    float t3 = Link3.getTarget();
+    bool CW1 = q1 > t1;
+    bool CW2 = q2 > t2;
+    bool CW3 = q3 > t3;
+    if (CW1 && CW2 && CW3) {
+        // 1 1 1
+    } else if (CW1 && CW2 && CW3) {
+    } else if (CW1 && CW2 && CW3) {
+    } else if (CW1 && CW2 && CW3) {
+    } else if (CW1 && CW2 && CW3) {
+    } else if (CW1 && CW2 && CW3) {
+    } else if (CW1 && CW2 && CW3) {
+    } else {  // 0 0 0
     }
+    // WIP
+    // if (target1 >= 0 && target2 >= 0 && target3 >= 0) {
+    //     while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
+    //         Link1.update();
+    //         Link2.update();
+    //         Link3.update();
+    //     }
+    // } else if (target2 < 0 && getJoint2Position().y < L2 + L3) {
+    //     while (Link1.isMoving()) {
+    //         Link1.update();
+    //     }
+    //     while (Link2.isMoving() || Link3.isMoving()) {
+    //         Link2.update();
+    //         Link3.update();
+    //     }
+    // } else if (Link1.getAngle() > target1 && Link2.getAngle() < target2) {
+    //     while (Link2.isMoving() || Link3.isMoving()) {
+    //         Link2.update();
+    //         Link3.update();
+    //     }
+    //     while (Link1.isMoving()) {
+    //         Link1.update();
+    //     }
+    // } else {
+    //     while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
+    //         Link1.update();
+    //         Link2.update();
+    //         Link3.update();
+    //     }
+    // }
 }
 
 // Individual Link functions
