@@ -223,17 +223,17 @@ float Manipulator::getLink3GR() {
 }
 
 // Joint position methods
-float getJoint1Position() {
+Position Manipulator::getJoint1Position() {
     float x = 0;
     float y = 0;
     return Position(x, y);
 }
-float getJoint2Position() {
+Position Manipulator::getJoint2Position() {
     float x = L1 * sinf(radians(Link1.getAngle()));
     float y = L1 * cosf(radians(Link1.getAngle()));
     return Position(x, y);
 }
-float getJoint3Height() {
+Position Manipulator::getJoint3Position() {
     // TODO: Verify
     float x = L1 * sinf(radians(Link1.getAngle())) + L2 * sinf(radians(Link2.getAngle()));
     float y = L1 * cosf(radians(Link1.getAngle())) + L2 * cosf(radians(Link2.getAngle()));

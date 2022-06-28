@@ -53,8 +53,4 @@ HomogeneousTransform transpose(HomogeneousTransform A);
 
 void printMatrix(HomogeneousTransform A);
 
-// Joint position methods
-float getJoint2Height();
-float getJoint3Height();
-
 #endif

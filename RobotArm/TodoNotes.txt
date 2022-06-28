@@ -1,0 +1,18 @@
+Search project for TODO marked comments for in-line TODOs.
+
+Some more general TODOs:
+
+Create official documentation for codebase: 
+Create docs and in-line comments for students to better understand the design of the tool. Create some examples for students to use in TestBench.h
+
+Create official documentation for utility: 
+Create a complete list of syntax and order of operations for students tofollow when writing programs to test their arm. Students should not need to modify any files except main.cpp when writing code. If a bug or error occurs, the devolopers and professor should be contacted to fix the issue. Of course, students are welcome to modify any of the source code included in the lib/ directory if desired.
+
+Create documentation for the hardware used:
+Put together final budget for all parts used for each kit. Create instructions for students to follow to build and wire the arm using correct and safe methods.
+
+Future goals:
+
+Design and print blocks, ball, and gripper for students to test the arm using physical constraints.
+
+Choose different parts to minimize cost per kit

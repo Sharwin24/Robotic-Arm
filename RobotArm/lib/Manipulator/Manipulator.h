@@ -89,8 +89,8 @@ class Manipulator {
     float getLink3GR();
 
     // Joint position methods
-    float getJoint1Height();
-    float getJoint2Height();
-    float getJoint3Height();
+    Position getJoint1Position();
+    Position getJoint2Position();
+    Position getJoint3Position();
 };
 #endif
