@@ -161,6 +161,9 @@ class TestBench {
         HomogeneousTransform A12 = HomogeneousTransform(R12, r12);
         HomogeneousTransform A23 = HomogeneousTransform(R23, r23);
         HomogeneousTransform A3e = HomogeneousTransform(R3e, r3e);
+        HomogeneousTransform A02 = multiply(A01, A12);
+        HomogeneousTransform A03 = multiply(A02, A23);
+        HomogeneousTransform A0e = multiply(A03, A3e);
         Serial.println("A01 -->");
         printMatrix(A01);
         Serial.println("A12 -->");
@@ -169,6 +172,12 @@ class TestBench {
         printMatrix(A23);
         Serial.println("A3e -->");
         printMatrix(A3e);
+        Serial.println("A02 -->");
+        printMatrix(A02);
+        Serial.println("A03 -->");
+        printMatrix(A03);
+        Serial.println("A0e -->");
+        printMatrix(A0e);
     }
 };
 

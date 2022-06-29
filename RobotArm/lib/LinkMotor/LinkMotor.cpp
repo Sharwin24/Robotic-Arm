@@ -2,8 +2,11 @@
 #include <LinkMotor.h>
 #include <Utils.h>
 
-// Docs in header file
-
+/**
+ * @brief Initializes the LinkMotor Object and sets default values for:
+ * current, target, currentSpeed, currentDelay. Also sets up pin-modes for motor/sensor pins
+ *
+ */
 void LinkMotor::init() {
     current = 0;
     currentAngle = 0.0;  // current % stepsPerRev;
@@ -21,81 +24,11 @@ void LinkMotor::init() {
     delay(500);
 }
 
-// Sets the speed (steps per sec) and calculates the required pulse delay
-void LinkMotor::setSpeed(float speed) {
-    currentSpeed = speed;
-    currentDelay = getDelayFromSpeed(speed);
-}
-
-void LinkMotor::setDirection(bool CW) {
-    if (CW) {
-        digitalWrite(dirPin, HIGH);
-    } else {
-        digitalWrite(dirPin, LOW);
-    }
-    currentDir = CW;
-}
-
-void LinkMotor::setTarget(int targetStep) {
-    if (current != target) {
-        return;  // Motor is currently moving
-    }
-    previous = current;
-    target = targetStep * outputGearRatio;
-    setDirection(current < target);  // True -> CW, False -> CCW
-}
-
-float LinkMotor::getTarget() { return target; }
-
-float LinkMotor::getSpeed() { return currentSpeed; }
-
-int LinkMotor::getDelay() { return currentDelay; }
-
-float LinkMotor::getAngle() { return currentAngle; }
-
-float LinkMotor::getGR() { return outputGearRatio; }
-
-void LinkMotor::updateAngle() {
-    currentAngle = abs(current % round(stepsPerRev));
-    currentAngle /= (stepsPerRev / 360.0);
-    if (current < 0) {
-        currentAngle *= -1;
-    }
-}
-
-int LinkMotor::getLimitSwitch() {
-    // If there is a valid limit switch pin, read it, otherwise return -1
-    return limitSwitchPin != -1 ? digitalRead(limitSwitchPin) : -1;
-}
-
-// Pulse the motor with the current delay value calculated from current speed
-void LinkMotor::stepMotor() {
-    digitalWrite(stepPin, HIGH);
-    delayMicroseconds(currentDelay);
-    digitalWrite(stepPin, LOW);
-    delayMicroseconds(currentDelay);
-}
-
-void LinkMotor::moveTo(int targetStep) {
-    setDirection(current < targetStep);  // True -> CW, False -> CCW
-    int stepDifference = abs(targetStep - current);
-    for (int i = 0; i < stepDifference; i++) {
-        stepMotor();
-    }
-    current = targetStep;
-    updateAngle();
-    Serial.println(targetStep);
-    Serial.print(current, DECIMALPRECISION);
-    Serial.print(" currentSteps | ");
-    Serial.print(currentAngle, DECIMALPRECISION);
-    Serial.println(" currentAngle");
-}
-
-void LinkMotor::moveToAngle(float degrees) {
-    float steps = round(degreeToSteps(degrees) * outputGearRatio);
-    moveTo(steps);
-}
-
+/**
+ * @brief Calibrates the LinkMotor to start at 'zero' position. When called, this method will move the link towards the limit switch indicating 'zero' until triggered. If the link does not support a limit switch, this method has no operation.
+ *
+ * @return int returns -1 on no-op, otherwise returns number of steps taken to calibrate Link
+ */
 int LinkMotor::calibrate() {
     if (limitSwitchPin == -1) {
         return -1;
@@ -116,6 +49,117 @@ int LinkMotor::calibrate() {
     return steps;
 }
 
+/**
+ * @brief Sets the speed (steps per sec) and calculates the required pulse delay
+ *
+ * @param speed speed in steps per second
+ */
+void LinkMotor::setSpeed(float speed) {
+    currentSpeed = speed;
+    currentDelay = getDelayFromSpeed(speed);
+}
+
+/**
+ * @brief Sets the direction given a bool representing direction
+ *
+ * @param CW  True -> CW, False -> CCW
+ */
+void LinkMotor::setDirection(bool CW) {
+    if (CW) {
+        digitalWrite(dirPin, HIGH);
+    } else {
+        digitalWrite(dirPin, LOW);
+    }
+    currentDir = CW;
+}
+
+/**
+ * @brief Sets the target to the given target step.
+ * Also sets the direction.
+ * This method will not execute if the link is still in motion.
+ *
+ * @param targetStep
+ */
+void LinkMotor::setTarget(int targetStep) {
+    if (current != target) {
+        return;  // Motor is currently moving
+    }
+    previous = current;
+    target = targetStep * outputGearRatio;
+    setDirection(current < target);  // True -> CW, False -> CCW
+}
+
+// Getter methods for class variables
+float LinkMotor::getTarget() { return target; }
+float LinkMotor::getSpeed() { return currentSpeed; }
+long LinkMotor::getDelay() { return currentDelay; }
+float LinkMotor::getAngle() { return currentAngle; }
+float LinkMotor::getGR() { return outputGearRatio; }
+int LinkMotor::getLimitSwitch() { return limitSwitchPin != -1 ? digitalRead(limitSwitchPin) : -1; }
+
+/**
+ * @brief Updates the current angle of the link using the current step of the LinkMotor.
+ *
+ */
+void LinkMotor::updateAngle() {
+    currentAngle = abs(current % round(stepsPerRev));
+    currentAngle /= (stepsPerRev / 360.0);
+    if (current < 0) {
+        currentAngle *= -1;
+    }
+}
+
+/**
+ * @brief Provides a pulse to the motor using the current delay calculated from the current speed
+ *
+ */
+void LinkMotor::stepMotor() {
+    digitalWrite(stepPin, HIGH);
+    delayMicroseconds(currentDelay);
+    digitalWrite(stepPin, LOW);
+    delayMicroseconds(currentDelay);
+}
+
+/**
+ * @brief Given a target step (negative steps allowed), calculates the number of steps and direction, and steps the motor towards the target.
+ * This is a blocking function and will only allow for this movement to be executed.
+ *
+ * @param targetStep the target to acheive. Represents an absolute position
+ */
+void LinkMotor::moveTo(int targetStep) {
+    setDirection(current < targetStep);  // True -> CW, False -> CCW
+    int stepDifference = abs(targetStep - current);
+    for (int i = 0; i < stepDifference; i++) {
+        stepMotor();
+    }
+    current = targetStep;
+    updateAngle();
+    Serial.println(targetStep);
+    Serial.print(current, DECIMALPRECISION);
+    Serial.print(" currentSteps | ");
+    Serial.print(currentAngle, DECIMALPRECISION);
+    Serial.println(" currentAngle");
+}
+
+/**
+ * @brief A more practical moveTo() function taking in a target angle.
+ * This method calls moveTo(int targetStep) after translating the given angle to steps.
+ *
+ * @param targetAngle the target angle in degrees
+ */
+void LinkMotor::moveToAngle(float targetAngle) {
+    float steps = round(degreeToSteps(targetAngle) * outputGearRatio);
+    moveTo(steps);
+}
+
+/**
+ * @brief Primary function to be used for non-blocking motion.
+ * This method will be called multiple times per second and will
+ * determine when to step the motor given the current time of the program
+ * and the time the motor was last pulsed. Updates current and currentAngl
+ * as motion occurs.
+ *
+ */
 void LinkMotor::update() {
     if (current == target) {
         return;
@@ -154,6 +198,11 @@ void LinkMotor::update() {
 
 bool LinkMotor::isMoving() { return current != target; }
 
+/**
+ * @brief Calls update() until the current step has met the target step
+ *
+ * @return true on function termination
+ */
 bool LinkMotor::waitToStop() {
     if (current == target) {
         return true;

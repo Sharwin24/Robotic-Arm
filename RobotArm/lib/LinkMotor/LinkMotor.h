@@ -1,7 +1,8 @@
 #ifndef LinkMotor_h
 #define LinkMotor_h
 
-// TODO: Docs
+// Documentaiton for methods in LinkMotor.cpp
+// TODO: Implement ROM (Range-of-Motion)
 
 class LinkMotor {
    private:
@@ -22,14 +23,20 @@ class LinkMotor {
     long maxSpeed;
     float currentSpeed;
     long currentDelay;
+    float minROM;
+    float maxROM;
 
    public:
+    // Constructors for creating a LinkMotor object. Needs to be assigned to a
+    // link number, step/direction pins, a limit switch pin, and output gear ratio
     LinkMotor(int _linkNumber, int _stepPin, int _dirPin, int _limitSwitchPin, float _outputGearRatio) {
         linkNumber = _linkNumber;
         stepPin = _stepPin;
         dirPin = _dirPin;
         limitSwitchPin = _limitSwitchPin;
         outputGearRatio = _outputGearRatio;
+        minROM = 0;
+        maxROM = 0;
     }
 
     LinkMotor(int _linkNumber, int _stepPin, int _dirPin, int _limitSwitchPin = -1) {
@@ -38,6 +45,18 @@ class LinkMotor {
         dirPin = _dirPin;
         limitSwitchPin = _limitSwitchPin;
         outputGearRatio = 1.0;
+        minROM = 0;
+        maxROM = 0;
+    }
+
+    LinkMotor(int _linkNumber, int _stepPin, int _dirPin, int _limitSwitchPin, float _outputGearRatio, float _minROM, float _maxROM) {
+        linkNumber = _linkNumber;
+        stepPin = _stepPin;
+        dirPin = _dirPin;
+        limitSwitchPin = _limitSwitchPin;
+        outputGearRatio = _outputGearRatio;
+        minROM = _minROM;
+        maxROM = _maxROM;
     }
 
     void init();
@@ -45,16 +64,11 @@ class LinkMotor {
     int calibrate();
 
     float getTarget();
-
     float getSpeed();
-
-    int getDelay();
-
+    long getDelay();
     float getGR();
-
-    int getLimitSwitch();
-
     float getAngle();
+    int getLimitSwitch();
 
     void updateAngle();
 
@@ -68,7 +82,7 @@ class LinkMotor {
 
     void moveTo(int targetStep);
 
-    void moveToAngle(float degrees);
+    void moveToAngle(float targetAngle);
 
     void update();
 
