@@ -33,6 +33,7 @@ class Manipulator {
         EEPos = ForwardKinematics(0, 0, 0);
     }
 
+    // Initializes then calibrates all links and EE
     void init() {
         Link1.init();
         Link2.init();
@@ -59,12 +60,10 @@ class Manipulator {
         EEPos = ForwardKinematics(q1, q2, q3);
     }
 
-    // Math Functions
     Position ForwardKinematics(float q1, float q2, float q3);
 
     JointAngles InverseKinematics(float xTarget, float yTarget);
 
-    // Movement Functions
     void moveToAngles(float q1, float q2, float q3);
 
     void moveToJointAngles(JointAngles jointAngleTargets);
