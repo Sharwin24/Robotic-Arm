@@ -7,8 +7,6 @@
 #include <JointAngles.h>
 #include <Utils.h>
 
-// TODO: Docs
-
 class Manipulator {
    private:
     int numLinks;
