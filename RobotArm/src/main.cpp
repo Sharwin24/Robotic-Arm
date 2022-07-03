@@ -18,11 +18,11 @@ void setup() {
     Serial.println("Disconnect power if mechanical failure occurs");
     delay(3000);
     Serial.println("Executing Control Loop");
+    tb.printForwardKinematics(0, 0, 0);
 }
 
 void loop() {
     // NOTE: TestBench methods are blocking
     // tb.link2ToAngle(RRRManipulator, 90.0);
-    tb.concurrentLink1Link2Link3(RRRManipulator, 45.0, 90.0, 90.0);
-    // tb.printMatricesTest();
+    // tb.concurrentLink1Link2Link3(RRRManipulator, 45.0, 90.0, 90.0);
 }

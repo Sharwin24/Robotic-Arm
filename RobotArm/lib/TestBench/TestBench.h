@@ -156,7 +156,9 @@ class TestBench {
         RotationMatrix R01 = RotationMatrix('z', q1);
         RotationMatrix R12 = RotationMatrix('z', q2);
         RotationMatrix R23 = RotationMatrix('z', q3);
-        RotationMatrix R3e = multiply(RotationMatrix('y', 90), RotationMatrix('z', 180));
+        RotationMatrix Ry = RotationMatrix('y', 90);
+        RotationMatrix Rz = RotationMatrix('z', 180);
+        RotationMatrix R3e = multiply(Ry, Rz);
         HomogeneousTransform A01 = HomogeneousTransform(R01, r01);
         HomogeneousTransform A12 = HomogeneousTransform(R12, r12);
         HomogeneousTransform A23 = HomogeneousTransform(R23, r23);
@@ -164,20 +166,13 @@ class TestBench {
         HomogeneousTransform A02 = multiply(A01, A12);
         HomogeneousTransform A03 = multiply(A02, A23);
         HomogeneousTransform A0e = multiply(A03, A3e);
-        Serial.println("A01 -->");
-        printMatrix(A01);
-        Serial.println("A12 -->");
-        printMatrix(A12);
-        Serial.println("A23 -->");
-        printMatrix(A23);
-        Serial.println("A3e -->");
-        printMatrix(A3e);
-        Serial.println("A02 -->");
-        printMatrix(A02);
-        Serial.println("A03 -->");
-        printMatrix(A03);
-        Serial.println("A0e -->");
-        printMatrix(A0e);
+        printTransform(A01, "01");
+        printTransform(A12, "12");
+        printTransform(A23, "23");
+        printTransform(A3e, "3e");
+        printTransform(A02, "02");
+        printTransform(A03, "03");
+        printTransform(A0e, "0e");
     }
 };
 

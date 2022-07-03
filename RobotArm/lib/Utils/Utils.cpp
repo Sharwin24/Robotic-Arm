@@ -52,7 +52,6 @@ void printLink1Link2Link3(float q1, float q2, float q3) {
     Serial.println(q3, DECIMALPRECISION);
 }
 
-// Rotation Matrix Methods
 RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2) {
     float matrix[3][3] = {
         {0.0, 0.0, 0.0},
@@ -68,38 +67,6 @@ RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2) {
     return RotationMatrix(matrix);
 }
 
-RotationMatrix transpose(RotationMatrix R) {
-    float matrix[3][3] = {
-        {0.0, 0.0, 0.0},
-        {0.0, 0.0, 0.0},
-        {0.0, 0.0, 0.0}};
-    for (int r = 0; r < 3; r++) {
-        for (int c = 0; c < 3; c++) {
-            matrix[c][r] = R.get(r, c);
-        }
-    }
-    return RotationMatrix(matrix);
-}
-
-void printMatrix(RotationMatrix R) {
-    String msg = "R";
-    msg.concat(R.getRotType());
-    msg.concat("(");
-    msg.concat(R.getTheta());
-    msg.concat(") -> ");
-    Serial.println(msg);
-    for (int r = 0; r < 3; r++) {
-        Serial.print("|");
-        for (int c = 0; c < 3; c++) {
-            Serial.print(" ");
-            Serial.print(R.get(r, c), DECIMALPRECISION);
-            Serial.print(" ");
-        }
-        Serial.println("|");
-    }
-}
-
-// Homogeneous Transform Matrix Methods
 HomogeneousTransform multiply(HomogeneousTransform A1, HomogeneousTransform A2) {
     float matrix[4][4] = {
         {0.0, 0.0, 0.0, 0.0},
@@ -114,6 +81,19 @@ HomogeneousTransform multiply(HomogeneousTransform A1, HomogeneousTransform A2) 
         }
     }
     return HomogeneousTransform(matrix);
+}
+
+RotationMatrix transpose(RotationMatrix R) {
+    float matrix[3][3] = {
+        {0.0, 0.0, 0.0},
+        {0.0, 0.0, 0.0},
+        {0.0, 0.0, 0.0}};
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            matrix[c][r] = R.get(r, c);
+        }
+    }
+    return RotationMatrix(matrix);
 }
 
 HomogeneousTransform transpose(HomogeneousTransform A) {
@@ -131,8 +111,28 @@ HomogeneousTransform transpose(HomogeneousTransform A) {
     return HomogeneousTransform(matrix);
 }
 
-void printMatrix(HomogeneousTransform A) {
-    Serial.println("A -> ");
+void printRotationMatrix(RotationMatrix R) {
+    String msg = "R";
+    msg.concat(R.getRotType());
+    msg.concat("(");
+    msg.concat(R.getTheta());
+    msg.concat(") -> ");
+    Serial.println(msg);
+    for (int r = 0; r < 3; r++) {
+        Serial.print("|");
+        for (int c = 0; c < 3; c++) {
+            Serial.print(" ");
+            Serial.print(R.get(r, c), DECIMALPRECISION);
+            Serial.print(" ");
+        }
+        Serial.println("|");
+    }
+}
+
+void printTransform(HomogeneousTransform A, String fromTo) {
+    Serial.print("A");
+    Serial.print(fromTo);
+    Serial.println(" ->");
     for (int r = 0; r < 4; r++) {
         Serial.print("|");
         for (int c = 0; c < 4; c++) {
