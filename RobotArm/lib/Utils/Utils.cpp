@@ -52,7 +52,15 @@ void printLink1Link2Link3(float q1, float q2, float q3) {
     Serial.println(q3, DECIMALPRECISION);
 }
 
-RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2) {
+RotationMatrix strassenMultiply(RotationMatrix R1, RotationMatrix R2) {
+    // Possible solution is to make it a 4x4 matrix padded with zeros
+    // [_ _ _ 0]
+    // [_ _ _ 0]
+    // [_ _ _ 0]
+    // [0 0 0 0]
+}
+
+RotationMatrix bruteForceMultiply(RotationMatrix R1, RotationMatrix R2) {
     float matrix[3][3] = {
         {0.0, 0.0, 0.0},
         {0.0, 0.0, 0.0},
@@ -67,7 +75,14 @@ RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2) {
     return RotationMatrix(matrix);
 }
 
-HomogeneousTransform multiply(HomogeneousTransform A1, HomogeneousTransform A2) {
+RotationMatrix multiply(RotationMatrix R1, RotationMatrix R2) {
+    return bruteForceMultiply(R1, R2);
+}
+
+HomogeneousTransform strassenMultiply(HomogeneousTransform A1, HomogeneousTransform A2) {
+}
+
+HomogeneousTransform bruteForceMultiply(HomogeneousTransform A1, HomogeneousTransform A2) {
     float matrix[4][4] = {
         {0.0, 0.0, 0.0, 0.0},
         {0.0, 0.0, 0.0, 0.0},
@@ -81,6 +96,10 @@ HomogeneousTransform multiply(HomogeneousTransform A1, HomogeneousTransform A2) 
         }
     }
     return HomogeneousTransform(matrix);
+}
+
+HomogeneousTransform multiply(HomogeneousTransform A1, HomogeneousTransform A2) {
+    return bruteForceMultiply(A1, A2);
 }
 
 RotationMatrix transpose(RotationMatrix R) {
