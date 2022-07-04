@@ -156,9 +156,9 @@ class TestBench {
         RotationMatrix R01 = RotationMatrix('z', q1);
         RotationMatrix R12 = RotationMatrix('z', q2);
         RotationMatrix R23 = RotationMatrix('z', q3);
-        RotationMatrix Ry = RotationMatrix('y', 90);
-        RotationMatrix Rz = RotationMatrix('z', 180);
-        RotationMatrix R3e = multiply(Ry, Rz);
+        RotationMatrix Ry90 = RotationMatrix('y', 90);
+        RotationMatrix Rz180 = RotationMatrix('z', 180);
+        RotationMatrix R3e = multiply(Ry90, Rz180);
         HomogeneousTransform A01 = HomogeneousTransform(R01, r01);
         HomogeneousTransform A12 = HomogeneousTransform(R12, r12);
         HomogeneousTransform A23 = HomogeneousTransform(R23, r23);
