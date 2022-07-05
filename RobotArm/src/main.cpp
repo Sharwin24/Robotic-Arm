@@ -5,6 +5,7 @@
 #include <Manipulator.h>
 #include <TestBench.h>
 // Construct a TestBench to run pre-made tests on your Manipulator
+// NOTE: Most TestBench methods are blocking
 TestBench tb = TestBench();
 // Construct a 3-Revolute Link Planar Manipulator with default link lengths
 // Default constants (link lengths, link speed, motor/sensor pins, motor-driver settings, etc.) are in Utils.h
@@ -16,13 +17,11 @@ void setup() {
     Serial.println("Manipulator Initialized");
     Serial.println("Ensure Power is connected and links are zeroed");
     Serial.println("Disconnect power if mechanical failure occurs");
+    Serial.println("Executing Control Loop in 3 seconds");
     delay(3000);
-    Serial.println("Executing Control Loop");
-    tb.printForwardKinematics(0, 0, 0);
+    tb.printForwardKinematics(15, 30, 90);
 }
 
 void loop() {
-    // NOTE: TestBench methods are blocking
-    // tb.link2ToAngle(RRRManipulator, 90.0);
-    // tb.concurrentLink1Link2Link3(RRRManipulator, 45.0, 90.0, 90.0);
+    tb.concurrentMotionFK(RRRManipulator, 15, 30, 90);
 }

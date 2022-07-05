@@ -26,7 +26,7 @@ const int link3StepPin = 6;
 const int link3DirPin = 7;
 const int link3LimitSwitchPin = -1;  // 13
 // End-Effector, length is in mm
-const int endEffectorLength = 10;
+const int Le = 10;
 const int servoLPin = -1;  // TODO: Wire servo motors
 const int servoRPin = -1;
 

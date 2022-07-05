@@ -5,17 +5,19 @@
 #include <Vector.h>
 #include <RotationMatrix.h>
 #include <HomogeneousTransform.h>
+#include <Utils.h>
 
 /**
  * @brief Using Forward Kinematics for this 3R-Planar Manipulator, obtains the
  * position of the end-effector given the joint angles.
  *
- * @param q1 Link 1 angle
- * @param q2 Link 2 angle
- * @param q3 Link 3 angle
+ * @param q1 Link 1 angle [deg]
+ * @param q2 Link 2 angle [deg]
+ * @param q3 Link 3 angle [deg]
+ * @param debug boolean to display debugging info, false by default
  * @return Position An object coupling (x,y) position
  */
-Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
+Position Manipulator::ForwardKinematics(float q1, float q2, float q3, bool debug) {
     // Obtaining angles in radians
     float q1R = radians(q1);
     float q2R = radians(q2);
@@ -33,19 +35,20 @@ Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
     RotationMatrix R23 = RotationMatrix('z', q3);
     HomogeneousTransform A23 = HomogeneousTransform(R23, r23);
     // Frame 3 -> EE
-    Vector r3e = Vector(endEffectorLength, 0.0, 0.0);
-    float R3eMatrix[3][3] = {
-        {0.0, 0.0, 1.0},
-        {0.0, -1.0, 0.0},
-        {1.0, 0.0, 0.0}};
-    // Ry(90) -> Rz(180)
-    RotationMatrix R3e = RotationMatrix(R3eMatrix);
+    Vector r3e = Vector(Le, 0.0, 0.0);
+    RotationMatrix R3e = RotationMatrix();  // No rotation -> Identity
     HomogeneousTransform A3e = HomogeneousTransform(R3e, r3e);
-
     // Find Transformation
     HomogeneousTransform A02 = multiply(A01, A12);
     HomogeneousTransform A2e = multiply(A23, A3e);
     HomogeneousTransform A0e = multiply(A02, A2e);
+    if (debug) {
+        printTransform(A01, "01");
+        printTransform(A12, "12");
+        printTransform(A23, "23");
+        printTransform(A3e, "3e");
+        printTransform(A0e, "0e");
+    }
     return Position(A0e.get(0, 3), A0e.get(1, 3));
 }
 
@@ -55,9 +58,10 @@ Position Manipulator::ForwardKinematics(float q1, float q2, float q3) {
  *
  * @param xTarget End-Effector X position [mm]
  * @param yTarget End-Effector Y position [mm]
+ * @param debug boolean to display debugging info, false by default
  * @return JointAngles an object coupling the joint angles together (q1,q2,q3)
  */
-JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget) {
+JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget, bool debug) {
     float ell = sqrtf(sq(xTarget) + sq(yTarget));
     float q2R = -acosf(
         (sq(ell) - sq(link1Length) - sq(link2Length)) /
@@ -72,6 +76,19 @@ JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget) {
     float q1D = degrees(q1R);
     float q2D = degrees(q2R);
     float q3D = degrees(q3R);
+    if (debug) {
+        printLink(1, q1D);
+        printLink(2, q2D);
+        printLink(3, q3D);
+        Serial.println("IK Values:");
+        Serial.print("ell -> ");
+        Serial.println(ell, DECIMALPRECISION);
+        Serial.print("beta -> ");
+        Serial.println(beta, DECIMALPRECISION);
+        Serial.print("alpha -> ");
+        Serial.println(alpha, DECIMALPRECISION);
+        Serial.println();
+    }
     return JointAngles(q1D, q2D, q3D);
 }
 
@@ -84,9 +101,9 @@ JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget) {
  */
 void Manipulator::moveToAngles(float q1, float q2, float q3) {
     // Obtain target angles as steps
-    int q1Steps = floorf(degreeToSteps(q1));
-    int q2Steps = floorf(degreeToSteps(q2));
-    int q3Steps = floorf(degreeToSteps(q3));
+    int q1Steps = round(degreeToSteps(q1));
+    int q2Steps = round(degreeToSteps(q2));
+    int q3Steps = round(degreeToSteps(q3));
     // Set the target step for each Link
     Link1.setTarget(q1Steps);
     Link2.setTarget(q2Steps);
@@ -108,9 +125,9 @@ void Manipulator::moveToJointAngles(JointAngles jointAngleTargets) {
 }
 
 /**
- * @brief Using InverseKinematics, given a Position (x,y),
+ * @brief Using InverseKinematics, given a (x,y) position,
  * the arm will move such that the End-Effector is at the given location.
- * If the motion is not possible, the arm will not move.
+ * TODO: Implement ROM so if the motion is not possible, the arm will not move.
  *
  * @param xTarget desired End-Effector X position [mm]
  * @param yTarget desired End-Effector Y position [mm]
@@ -154,22 +171,15 @@ void Manipulator::updateLinks() {
     bool CW3 = q3 > t3;
     // TODO: Collapse and validate decision tree
     // CCW = 0, CW = 1
-    if (CW1 && CW2 && CW3) {
-        // 1 1 1
+    if ((CW1 && CW2 && CW3) || (CW1 && CW2 && !CW3)) {
+        // 111 || 110
         while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
             Link1.update();
             Link2.update();
             Link3.update();
         }
-    } else if (CW1 && CW2 && !CW3) {
-        // 1 1 0
-        while (Link1.isMoving() || Link2.isMoving() || Link3.isMoving()) {
-            Link1.update();
-            Link2.update();
-            Link3.update();
-        }
-    } else if (!CW1 && CW2 && CW3) {
-        // 0 1 1
+    } else if ((!CW1 && CW2 && CW3) || (CW1 && !CW2 && CW3)) {
+        // 011 || 101
         while (Link1.isMoving()) {
             Link1.update();
         }
@@ -177,17 +187,8 @@ void Manipulator::updateLinks() {
             Link2.update();
             Link3.update();
         }
-    } else if (CW1 && !CW2 && !CW3) {
-        // 1 0 0
-        while (Link2.isMoving() || Link3.isMoving()) {
-            Link2.update();
-            Link3.update();
-        }
-        while (Link1.isMoving()) {
-            Link1.update();
-        }
-    } else if (!CW1 && CW2 && !CW3) {
-        // 0 1 0
+    } else if ((CW1 && !CW2 && !CW3) || (!CW1 && CW2 && !CW3)) {
+        // 100 || 010
         while (Link2.isMoving() || Link3.isMoving()) {
             Link2.update();
             Link3.update();
@@ -202,15 +203,6 @@ void Manipulator::updateLinks() {
             Link2.update();
         }
         while (Link3.isMoving()) {
-            Link3.update();
-        }
-    } else if (CW1 && !CW2 && CW3) {
-        // 1 0 1
-        while (Link1.isMoving()) {
-            Link1.update();
-        }
-        while (Link2.isMoving() || Link3.isMoving()) {
-            Link2.update();
             Link3.update();
         }
     } else {  // 0 0 0
@@ -251,6 +243,25 @@ void Manipulator::setLink2Target(int targetStep) {
  */
 void Manipulator::setLink3Target(int targetStep) {
     Link3.setTarget(targetStep);
+}
+
+/**
+ * @brief Sets the target for the given link number and updates the link
+ * to complete the motion
+ *
+ * @param degrees target angle for the link
+ * @param linkNumber the number for which link to move [1,2,3]
+ */
+void Manipulator::linkToAngle(float degrees, int linkNumber) {
+    if (linkNumber == 1) {
+        link1ToAngle(degrees);
+    } else if (linkNumber == 2) {
+        link2ToAngle(degrees);
+    } else if (linkNumber == 3) {
+        link3ToAngle(degrees);
+    } else {
+        Serial.print("Invalid Link Number given");
+    }
 }
 
 /**

@@ -4,6 +4,12 @@
 #include <RotationMatrix.h>
 #include <Vector.h>
 #include <Utils.h>
+
+/**
+ * @brief Class definition for a 4x4 matrix representing the
+ * Homogeneous Transformation matrix built with a 3x3 Rotation Matrix and a 3x1 distance vector
+ *
+ */
 class HomogeneousTransform {
    private:
     float m[4][4];
@@ -30,6 +36,10 @@ class HomogeneousTransform {
     }
 
     float get(int r, int c) {
+        if (r < 0 || r > 3 || c < 0 || c > 3) {
+            Serial.println("Invalid matrix index given");
+            return INFINITY;
+        }
         return m[r][c];
     }
 };

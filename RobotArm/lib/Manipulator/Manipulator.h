@@ -58,9 +58,9 @@ class Manipulator {
         EEPos = ForwardKinematics(q1, q2, q3);
     }
 
-    Position ForwardKinematics(float q1, float q2, float q3);
+    Position ForwardKinematics(float q1, float q2, float q3, bool debug = false);
 
-    JointAngles InverseKinematics(float xTarget, float yTarget);
+    JointAngles InverseKinematics(float xTarget, float yTarget, bool debug = false);
 
     void moveToAngles(float q1, float q2, float q3);
 
@@ -77,6 +77,7 @@ class Manipulator {
     void setLink2Target(int targetStep);
     void setLink3Target(int targetStep);
 
+    void linkToAngle(float degrees, int linkNumber);
     void link1ToAngle(float degrees);
     void link2ToAngle(float degrees);
     void link3ToAngle(float degrees);
