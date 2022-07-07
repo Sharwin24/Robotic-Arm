@@ -134,11 +134,6 @@ void LinkMotor::moveTo(int targetStep) {
     }
     current = targetStep;
     updateAngle();
-    Serial.println(targetStep);
-    Serial.print(current, DECIMALPRECISION);
-    Serial.print(" currentSteps | ");
-    Serial.print(currentAngle, DECIMALPRECISION);
-    Serial.println(" currentAngle");
 }
 
 /**
@@ -156,7 +151,7 @@ void LinkMotor::moveToAngle(float targetAngle) {
  * @brief Primary function to be used for non-blocking motion.
  * This method will be called multiple times per second and will
  * determine when to step the motor given the current time of the program
- * and the time the motor was last pulsed. Updates current and currentAngl
+ * and the time the motor was last pulsed. Updates current and currentAngle
  * as motion occurs.
  *
  */

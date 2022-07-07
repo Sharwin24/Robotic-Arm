@@ -23,7 +23,7 @@ class LinkMotor {
     long maxSpeed;
     float currentSpeed;
     long currentDelay;
-    float minROM;
+    float minROM;  // Range-of-Motion min/max in degrees
     float maxROM;
 
    public:

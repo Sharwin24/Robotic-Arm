@@ -10,9 +10,9 @@
 class Manipulator {
    private:
     int numLinks;
-    LinkMotor Link1 = LinkMotor(1, link1StepPin, link1DirPin, link1LimitSwitchPin, 5.0);
-    LinkMotor Link2 = LinkMotor(2, link2StepPin, link2DirPin, link2LimitSwitchPin, 5.0);
-    LinkMotor Link3 = LinkMotor(3, link3StepPin, link3DirPin, link3LimitSwitchPin);
+    LinkMotor Link1 = LinkMotor(1, link1StepPin, link1DirPin, link1LimitSwitchPin, 5.0);  // TODO: Define ROM
+    LinkMotor Link2 = LinkMotor(2, link2StepPin, link2DirPin, link2LimitSwitchPin, 5.0);  // TODO: Define ROM
+    LinkMotor Link3 = LinkMotor(3, link3StepPin, link3DirPin, link3LimitSwitchPin);       // TODO: Define ROM
     Gripper EE = Gripper(servoLPin, servoRPin);
     float link1Length;
     float link2Length;
