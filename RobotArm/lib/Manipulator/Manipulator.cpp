@@ -93,13 +93,18 @@ JointAngles Manipulator::InverseKinematics(float xTarget, float yTarget, bool de
 }
 
 /**
- * @brief Rotates each joint to their given angle with concurrent motion
+ * @brief Rotates each joint to their given angle with concurrent motion.
+ * If a given angle is not within the respective link's range-of-motion,
+ * no motion will occur.
  *
  * @param q1 Link 1 angle [deg]
  * @param q2 Link 2 angle [deg]
  * @param q3 Link 3 angle [deg]
  */
 void Manipulator::moveToAngles(float q1, float q2, float q3) {
+    if (!Link1.withinROM(q1) || !Link2.withinROM(q2) || !Link3.withinROM(q3)) {
+        return;
+    }
     // Obtain target angles as steps
     int q1Steps = round(degreeToSteps(q1));
     int q2Steps = round(degreeToSteps(q2));
@@ -232,7 +237,9 @@ void Manipulator::setLink2Target(int targetStep) {
     // For some reason, Link 2 always travels half its target
     // Math has been checked, Gear ratio has been checked,
     // SPR on driver has been checked
-    // Potential Reasons: Nema 14 has a different steps setting?
+    // Potential Reasons:
+    // - Nema 14 has a different steps setting?
+    // - Motor Driver is faulty? (unlikely)
     Link2.setTarget(targetStep * 2.0);  // !!Temporary Fix!!
 }
 
@@ -253,11 +260,11 @@ void Manipulator::setLink3Target(int targetStep) {
  * @param linkNumber the number for which link to move [1,2,3]
  */
 void Manipulator::linkToAngle(float degrees, int linkNumber) {
-    if (linkNumber == 1) {
+    if (linkNumber == 1 && Link1.withinROM(degrees)) {
         link1ToAngle(degrees);
-    } else if (linkNumber == 2) {
+    } else if (linkNumber == 2 && Link2.withinROM(degrees)) {
         link2ToAngle(degrees);
-    } else if (linkNumber == 3) {
+    } else if (linkNumber == 3 && Link3.withinROM(degrees)) {
         link3ToAngle(degrees);
     } else {
         Serial.print("Invalid Link Number given");
@@ -311,6 +318,12 @@ float Manipulator::getLink1GR() { return Link1.getGR(); }
 float Manipulator::getLink2GR() { return Link2.getGR(); }
 float Manipulator::getLink3GR() { return Link3.getGR(); }
 
+/*
+  Y ^
+    |
+    *--> X
+ */
+
 /**
  * @brief Obtains the 2D Position of Joint 1, which Link 1 rotates about
  *
@@ -328,8 +341,8 @@ Position Manipulator::getJoint1Position() {
  * @return Position object coupling (x,y)
  */
 Position Manipulator::getJoint2Position() {
-    float x = L1 * sinf(radians(Link1.getAngle()));
-    float y = L1 * cosf(radians(Link1.getAngle()));
+    float x = L1 * cosf(radians(Link1.getAngle()));
+    float y = L1 * sinf(radians(Link1.getAngle()));
     return Position(x, y);
 }
 
@@ -339,8 +352,7 @@ Position Manipulator::getJoint2Position() {
  * @return Position object coupling (x,y)
  */
 Position Manipulator::getJoint3Position() {
-    // TODO: Verify
-    float x = L1 * sinf(radians(Link1.getAngle())) + L2 * sinf(radians(Link2.getAngle()));
-    float y = L1 * cosf(radians(Link1.getAngle())) + L2 * cosf(radians(Link2.getAngle()));
+    float x = L1 * cosf(radians(Link1.getAngle())) + L2 * cosf(radians(Link2.getAngle()));
+    float y = L1 * sinf(radians(Link1.getAngle())) + L2 * sinf(radians(Link2.getAngle()));
     return Position(x, y);
 }

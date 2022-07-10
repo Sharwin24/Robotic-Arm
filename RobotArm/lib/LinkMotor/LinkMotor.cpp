@@ -25,7 +25,7 @@ void LinkMotor::init() {
 }
 
 /**
- * @brief Calibrates the LinkMotor to start at 'zero' position. When called, this method will move the link towards the limit switch indicating 'zero' until triggered. 
+ * @brief Calibrates the LinkMotor to start at 'zero' position. When called, this method will move the link towards the limit switch indicating 'zero' until triggered.
  * If the link does not support a limit switch, this method has no operation.
  *
  * @return int returns -1 on no-op, otherwise returns number of steps taken to calibrate Link
@@ -97,6 +97,16 @@ long LinkMotor::getDelay() { return currentDelay; }
 float LinkMotor::getAngle() { return currentAngle; }
 float LinkMotor::getGR() { return outputGearRatio; }
 int LinkMotor::getLimitSwitch() { return limitSwitchPin != -1 ? digitalRead(limitSwitchPin) : -1; }
+
+/**
+ * @brief Determines if the given angle is within this link's range of motion
+ *
+ * @param angle given in degrees
+ * @return true if the angle is within link's ROM and is able to move to it
+ */
+bool LinkMotor::withinROM(float angle) {
+    return angle >= minROM && angle <= maxROM;
+}
 
 /**
  * @brief Updates the current angle of the link using the current step of the LinkMotor.

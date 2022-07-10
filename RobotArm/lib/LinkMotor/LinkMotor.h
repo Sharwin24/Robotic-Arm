@@ -70,6 +70,8 @@ class LinkMotor {
 
     void updateAngle();
 
+    bool withinROM(float angle);
+
     void setSpeed(float speed);
 
     void setDirection(bool CW);
