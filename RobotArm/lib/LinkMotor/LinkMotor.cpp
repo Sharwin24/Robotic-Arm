@@ -25,7 +25,8 @@ void LinkMotor::init() {
 }
 
 /**
- * @brief Calibrates the LinkMotor to start at 'zero' position. When called, this method will move the link towards the limit switch indicating 'zero' until triggered. If the link does not support a limit switch, this method has no operation.
+ * @brief Calibrates the LinkMotor to start at 'zero' position. When called, this method will move the link towards the limit switch indicating 'zero' until triggered. 
+ * If the link does not support a limit switch, this method has no operation.
  *
  * @return int returns -1 on no-op, otherwise returns number of steps taken to calibrate Link
  */

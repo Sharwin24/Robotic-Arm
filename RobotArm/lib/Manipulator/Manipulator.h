@@ -10,10 +10,10 @@
 class Manipulator {
    private:
     int numLinks;
-    LinkMotor Link1 = LinkMotor(1, link1StepPin, link1DirPin, link1LimitSwitchPin, 5.0);  // TODO: Define ROM
-    LinkMotor Link2 = LinkMotor(2, link2StepPin, link2DirPin, link2LimitSwitchPin, 5.0);  // TODO: Define ROM
-    LinkMotor Link3 = LinkMotor(3, link3StepPin, link3DirPin, link3LimitSwitchPin);       // TODO: Define ROM
-    Gripper EE = Gripper(servoLPin, servoRPin);
+    LinkMotor Link1 = LinkMotor(1, link1StepPin, link1DirPin, link1LimitSwitchPin, 5.0, link1MinAngle, link1MaxAngle);
+    LinkMotor Link2 = LinkMotor(2, link2StepPin, link2DirPin, link2LimitSwitchPin, 5.0, link2MinAngle, link2MaxAngle);
+    LinkMotor Link3 = LinkMotor(3, link3StepPin, link3DirPin, link3LimitSwitchPin, 1.0, link3MinAngle, link3MaxAngle);
+    Gripper EE = Gripper(servoLPin, servoRPin);  // End-Effector is a parallel gripper powered by 2 servos
     float link1Length;
     float link2Length;
     float link3Length;

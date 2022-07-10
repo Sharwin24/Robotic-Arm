@@ -6,22 +6,30 @@
 #include <RotationMatrix.h>
 #include <HomogeneousTransform.h>
 
+// TODO
+
 // Tunable Constants
 const float stepsPerRev = 8000.0;  // Set according to motor-driver
 const float RPM = 75.0;            // Link Speed
 const int DECIMALPRECISION = 4;    // Decimal Precision when printing
 // Link 1, length is in mm
 const int L1 = 125;
+const int link1MinAngle = 0;
+const int link1MaxAngle = 0;  // 120?
 const int link1StepPin = 2;
 const int link1DirPin = 3;
 const int link1LimitSwitchPin = -1;  // 8
 // Link 2, length is in mm
 const int L2 = 100;
+const int link2MinAngle = 0;  // -135?
+const int link2MaxAngle = 0;  // 120?
 const int link2StepPin = 4;
 const int link2DirPin = 5;
 const int link2LimitSwitchPin = -1;  // 12
 // Link 3, length is in mm
 const int L3 = 40;
+const int link3MinAngle = 0;  // -165?
+const int link3MaxAngle = 0;  // 165?
 const int link3StepPin = 6;
 const int link3DirPin = 7;
 const int link3LimitSwitchPin = -1;  // 13

@@ -23,8 +23,8 @@ class LinkMotor {
     long maxSpeed;
     float currentSpeed;
     long currentDelay;
-    float minROM;  // Range-of-Motion min/max in degrees
-    float maxROM;
+    float minROM = 0;  // Range-of-Motion min/max in degrees
+    float maxROM = 0;
 
    public:
     // Constructors for creating a LinkMotor object. Needs to be assigned to a
@@ -35,8 +35,6 @@ class LinkMotor {
         dirPin = _dirPin;
         limitSwitchPin = _limitSwitchPin;
         outputGearRatio = _outputGearRatio;
-        minROM = 0;
-        maxROM = 0;
     }
 
     LinkMotor(int _linkNumber, int _stepPin, int _dirPin, int _limitSwitchPin = -1) {
@@ -45,8 +43,6 @@ class LinkMotor {
         dirPin = _dirPin;
         limitSwitchPin = _limitSwitchPin;
         outputGearRatio = 1.0;
-        minROM = 0;
-        maxROM = 0;
     }
 
     LinkMotor(int _linkNumber, int _stepPin, int _dirPin, int _limitSwitchPin, float _outputGearRatio, float _minROM, float _maxROM) {
@@ -55,8 +51,10 @@ class LinkMotor {
         dirPin = _dirPin;
         limitSwitchPin = _limitSwitchPin;
         outputGearRatio = _outputGearRatio;
-        minROM = _minROM;
-        maxROM = _maxROM;
+        if (_minROM != _maxROM) {
+            minROM = _minROM;
+            maxROM = _maxROM;
+        }
     }
 
     void init();
